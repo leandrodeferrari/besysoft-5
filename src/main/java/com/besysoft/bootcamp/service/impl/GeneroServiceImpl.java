@@ -1,6 +1,9 @@
 package com.besysoft.bootcamp.service.impl;
 
 import com.besysoft.bootcamp.domain.Genero;
+import com.besysoft.bootcamp.dto.mapper.IGeneroMapper;
+import com.besysoft.bootcamp.dto.request.GeneroInDto;
+import com.besysoft.bootcamp.dto.response.GeneroOutDto;
 import com.besysoft.bootcamp.repository.database.IGeneroRepository;
 import com.besysoft.bootcamp.service.IGeneroService;
 import com.besysoft.bootcamp.util.GeneroUtil;
@@ -12,47 +15,54 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @ConditionalOnProperty(prefix = "app", name = "type-data", havingValue = "database")
 @Service
 public class GeneroServiceImpl implements IGeneroService {
 
+    private final IGeneroMapper generoMapper;
     private final IGeneroRepository generoRepository;
 
-    public GeneroServiceImpl(IGeneroRepository generoRepository) {
+    public GeneroServiceImpl(IGeneroMapper generoMapper,
+                             IGeneroRepository generoRepository) {
+        this.generoMapper = generoMapper;
         this.generoRepository = generoRepository;
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<Genero> obtenerTodos() {
-        return this.generoRepository.findAll();
+    public List<GeneroOutDto> obtenerTodos() {
+        return this.generoRepository.findAll()
+                .stream()
+                .map(generoMapper::mapToDto)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = false)
     @Override
-    public Genero crear(Genero genero) {
+    public GeneroOutDto crear(GeneroInDto dto) {
 
-        GeneroUtil.validarNombre(genero.getNombre());
-        genero.setId(null);
+        GeneroUtil.validarNombre(dto.getNombre());
 
-        if(this.generoRepository.existsByNombre(genero.getNombre())){
+        if(this.generoRepository.existsByNombre(dto.getNombre())){
             throw new IllegalArgumentException("El genero ya existe.");
         }
 
-        return this.generoRepository.save(genero);
+        Genero genero = this.generoRepository.save(this.generoMapper.mapToEntity(dto));
+
+        return this.generoMapper.mapToDto(genero);
 
     }
 
     @Transactional(readOnly = false)
     @Override
-    public Genero actualizar(Long id, Genero genero) {
+    public GeneroOutDto actualizar(Long id, GeneroInDto dto) {
 
         ValidacionGeneralUtil.validarId(id);
-        GeneroUtil.validarNombre(genero.getNombre());
-        genero.setId(id);
+        GeneroUtil.validarNombre(dto.getNombre());
 
-        if(this.generoRepository.existsByNombre(genero.getNombre())){
+        if(this.generoRepository.existsByNombre(dto.getNombre())){
             throw new IllegalArgumentException("Ya existe un genero con ese nombre.");
         }
 
@@ -60,7 +70,10 @@ public class GeneroServiceImpl implements IGeneroService {
             throw new IllegalArgumentException("No existe genero con ese ID.");
         }
 
-        return this.generoRepository.save(genero);
+        Genero genero = this.generoMapper.mapToEntity(dto);
+        genero.setId(id);
+
+        return this.generoMapper.mapToDto(this.generoRepository.save(genero));
 
     }
 

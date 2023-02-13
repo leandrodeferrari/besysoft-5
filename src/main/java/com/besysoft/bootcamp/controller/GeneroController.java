@@ -1,6 +1,6 @@
 package com.besysoft.bootcamp.controller;
 
-import com.besysoft.bootcamp.domain.Genero;
+import com.besysoft.bootcamp.dto.request.GeneroInDto;
 import com.besysoft.bootcamp.service.IGeneroService;
 
 import org.springframework.http.HttpStatus;
@@ -29,10 +29,10 @@ public class GeneroController {
     }
 
     @PostMapping
-    public ResponseEntity<?> crear(@RequestBody Genero genero){
+    public ResponseEntity<?> crear(@RequestBody GeneroInDto dto){
 
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(this.generoService.crear(genero));
+            return ResponseEntity.status(HttpStatus.CREATED).body(this.generoService.crear(dto));
         } catch (IllegalArgumentException ex){
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (RuntimeException ex){
@@ -43,10 +43,10 @@ public class GeneroController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizar(@PathVariable Long id,
-                                        @RequestBody Genero genero){
+                                        @RequestBody GeneroInDto dto){
 
         try {
-            return ResponseEntity.ok(this.generoService.actualizar(id, genero));
+            return ResponseEntity.ok(this.generoService.actualizar(id, dto));
         } catch (IllegalArgumentException ex){
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (RuntimeException ex){
