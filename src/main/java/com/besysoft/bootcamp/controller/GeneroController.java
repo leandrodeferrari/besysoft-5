@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/generos")
 public class GeneroController {
@@ -29,7 +31,7 @@ public class GeneroController {
     }
 
     @PostMapping
-    public ResponseEntity<?> crear(@RequestBody GeneroInDto dto){
+    public ResponseEntity<?> crear(@Valid @RequestBody GeneroInDto dto){
 
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(this.generoService.crear(dto));
@@ -43,7 +45,7 @@ public class GeneroController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizar(@PathVariable Long id,
-                                        @RequestBody GeneroInDto dto){
+                                        @Valid @RequestBody GeneroInDto dto){
 
         try {
             return ResponseEntity.ok(this.generoService.actualizar(id, dto));

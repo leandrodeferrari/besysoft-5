@@ -1,6 +1,7 @@
 package com.besysoft.bootcamp.util;
 
 import com.besysoft.bootcamp.domain.Personaje;
+import com.besysoft.bootcamp.dto.request.PersonajeInDto;
 
 public class PersonajeUtil {
 
@@ -10,6 +11,15 @@ public class PersonajeUtil {
         validarEdad(personaje.getEdad());
         validarPeso(personaje.getPeso());
         validarHistoria(personaje.getHistoria());
+
+    }
+
+    public static void validarDto(PersonajeInDto dto){
+
+        validarNombre(dto.getNombre());
+        validarEdad(dto.getEdad());
+        validarPeso(dto.getPeso());
+        validarHistoria(dto.getHistoria());
 
     }
 

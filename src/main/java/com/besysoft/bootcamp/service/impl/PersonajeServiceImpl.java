@@ -1,6 +1,9 @@
 package com.besysoft.bootcamp.service.impl;
 
 import com.besysoft.bootcamp.domain.Personaje;
+import com.besysoft.bootcamp.dto.mapper.IPersonajeMapper;
+import com.besysoft.bootcamp.dto.request.PersonajeInDto;
+import com.besysoft.bootcamp.dto.response.PersonajeOutDto;
 import com.besysoft.bootcamp.repository.database.IPersonajeRepository;
 import com.besysoft.bootcamp.service.IPersonajeService;
 import com.besysoft.bootcamp.util.PersonajeUtil;
@@ -11,75 +14,97 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ConditionalOnProperty(prefix = "app", name = "type-data", havingValue = "database")
 @Service
 public class PersonajeServiceImpl implements IPersonajeService {
 
+    private final IPersonajeMapper personajeMapper;
     private final IPersonajeRepository personajeRepository;
 
-    public PersonajeServiceImpl(IPersonajeRepository personajeRepository) {
+    public PersonajeServiceImpl(IPersonajeMapper personajeMapper,
+                                IPersonajeRepository personajeRepository) {
+        this.personajeMapper = personajeMapper;
         this.personajeRepository = personajeRepository;
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<Personaje> buscarPorFiltros(String nombre, Byte edad) {
+    public List<PersonajeOutDto> buscarPorFiltros(String nombre, Byte edad) {
 
         if(nombre == null && edad == null){
-            return this.personajeRepository.findAll();
+            return this.personajeRepository.findAll()
+                    .stream()
+                    .map(personajeMapper::mapToDto)
+                    .collect(Collectors.toList());
         }
 
         if (nombre != null && edad != null){
-            return this.personajeRepository.findAllByNombreAndEdad(nombre, edad);
+            return this.personajeRepository.findAllByNombreAndEdad(nombre, edad)
+                    .stream()
+                    .map(personajeMapper::mapToDto)
+                    .collect(Collectors.toList());
         }
 
         if(nombre != null){
             PersonajeUtil.validarNombreVacio(nombre);
-            return this.personajeRepository.findAllByNombre(nombre);
+            return this.personajeRepository.findAllByNombre(nombre)
+                    .stream()
+                    .map(personajeMapper::mapToDto)
+                    .collect(Collectors.toList());
         } else {
             PersonajeUtil.validarEdadMinima(edad);
-            return this.personajeRepository.findAllByEdad(edad);
+            return this.personajeRepository.findAllByEdad(edad)
+                    .stream()
+                    .map(personajeMapper::mapToDto)
+                    .collect(Collectors.toList());
         }
 
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<Personaje> buscarPorEdades(Byte desde, Byte hasta) {
+    public List<PersonajeOutDto> buscarPorEdades(Byte desde, Byte hasta) {
 
         PersonajeUtil.validarEdad(desde);
         PersonajeUtil.validarEdad(hasta);
         ValidacionGeneralUtil.validarRangoDeNumeros(desde, hasta);
 
-        return this.personajeRepository.findAllByEdadBetween(desde, hasta);
+        return this.personajeRepository.findAllByEdadBetween(desde, hasta)
+                .stream()
+                .map(personajeMapper::mapToDto)
+                .collect(Collectors.toList());
 
     }
 
     @Transactional(readOnly = false)
     @Override
-    public Personaje crear(Personaje personaje) {
+    public PersonajeOutDto crear(PersonajeInDto dto) {
 
-        PersonajeUtil.validar(personaje);
-        personaje.setId(null);
+        PersonajeUtil.validarDto(dto);
 
-        return this.personajeRepository.save(personaje);
+        Personaje personaje = this.personajeRepository.save(this.personajeMapper.mapToEntity(dto));
+
+        return this.personajeMapper.mapToDto(personaje);
 
     }
 
     @Transactional(readOnly = false)
     @Override
-    public Personaje actualizar(Long id, Personaje personaje) {
+    public PersonajeOutDto actualizar(Long id, PersonajeInDto dto) {
 
         ValidacionGeneralUtil.validarId(id);
-        PersonajeUtil.validar(personaje);
-        personaje.setId(id);
+        PersonajeUtil.validarDto(dto);
 
         if(!this.personajeRepository.existsById(id)){
             throw new IllegalArgumentException("No existe personaje con ese ID.");
         }
 
-        return this.personajeRepository.save(personaje);
+        Personaje personaje = this.personajeMapper.mapToEntity(dto);
+        personaje.setId(id);
+
+        return this.personajeMapper.mapToDto(this.personajeRepository.save(personaje));
 
     }
 

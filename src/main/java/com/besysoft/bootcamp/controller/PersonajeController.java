@@ -1,11 +1,13 @@
 package com.besysoft.bootcamp.controller;
 
-import com.besysoft.bootcamp.domain.Personaje;
+import com.besysoft.bootcamp.dto.request.PersonajeInDto;
 import com.besysoft.bootcamp.service.IPersonajeService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/personajes")
@@ -46,10 +48,10 @@ public class PersonajeController {
     }
 
     @PostMapping
-    public ResponseEntity<?> crear(@RequestBody Personaje personaje){
+    public ResponseEntity<?> crear(@Valid @RequestBody PersonajeInDto dto){
 
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(this.personajeService.crear(personaje));
+            return ResponseEntity.status(HttpStatus.CREATED).body(this.personajeService.crear(dto));
         } catch (IllegalArgumentException ex){
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (RuntimeException ex){
@@ -60,10 +62,10 @@ public class PersonajeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizar(@PathVariable Long id,
-                                        @RequestBody Personaje personaje){
+                                        @Valid @RequestBody PersonajeInDto dto){
 
         try {
-            return ResponseEntity.ok(this.personajeService.actualizar(id, personaje));
+            return ResponseEntity.ok(this.personajeService.actualizar(id, dto));
         } catch (IllegalArgumentException ex){
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (RuntimeException ex){
