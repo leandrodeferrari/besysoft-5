@@ -2,6 +2,9 @@ package com.besysoft.bootcamp.service.impl;
 
 import com.besysoft.bootcamp.domain.Genero;
 import com.besysoft.bootcamp.domain.PeliculaSerie;
+import com.besysoft.bootcamp.dto.mapper.IPeliculaSerieMapper;
+import com.besysoft.bootcamp.dto.request.PeliculaSerieInDto;
+import com.besysoft.bootcamp.dto.response.PeliculaSerieOutDto;
 import com.besysoft.bootcamp.repository.database.IPeliculaSerieRepository;
 import com.besysoft.bootcamp.service.IGeneroService;
 import com.besysoft.bootcamp.service.IPeliculaSerieService;
@@ -18,26 +21,33 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @ConditionalOnProperty(prefix = "app", name = "type-data", havingValue = "database")
 @Service
 public class PeliculaSerieServiceImpl implements IPeliculaSerieService {
 
     private final IGeneroService generoService;
+    private final IPeliculaSerieMapper peliculaSerieMapper;
     private final IPeliculaSerieRepository peliculaSerieRepository;
 
     public PeliculaSerieServiceImpl(IGeneroService generoService,
+                                    IPeliculaSerieMapper peliculaSerieMapper,
                                     IPeliculaSerieRepository peliculaSerieRepository) {
         this.generoService = generoService;
+        this.peliculaSerieMapper = peliculaSerieMapper;
         this.peliculaSerieRepository = peliculaSerieRepository;
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<PeliculaSerie> buscarPorFiltros(String titulo, String nombreGenero) {
+    public List<PeliculaSerieOutDto> buscarPorFiltros(String titulo, String nombreGenero) {
 
         if(titulo == null && nombreGenero == null){
-            return this.peliculaSerieRepository.findAll();
+            return this.peliculaSerieRepository.findAll()
+                    .stream()
+                    .map(this.peliculaSerieMapper::mapToDto)
+                    .collect(Collectors.toList());
         }
 
         if(titulo != null && nombreGenero != null){
@@ -46,7 +56,10 @@ public class PeliculaSerieServiceImpl implements IPeliculaSerieService {
 
                 Genero genero = this.generoService.buscarPorNombre(nombreGenero).get();
 
-                return peliculaSerieRepository.findAllByTituloAndGenero(titulo, genero);
+                return this.peliculaSerieRepository.findAllByTituloAndGenero(titulo, genero)
+                        .stream()
+                        .map(this.peliculaSerieMapper::mapToDto)
+                        .collect(Collectors.toList());
 
             } else {
 
@@ -60,19 +73,19 @@ public class PeliculaSerieServiceImpl implements IPeliculaSerieService {
 
             PeliculaSerieUtil.validarTituloVacio(titulo);
 
-            List<PeliculaSerie> peliculasSeries = new ArrayList<>();
+            List<PeliculaSerieOutDto> peliculasSeriesDto = new ArrayList<>();
 
             Optional<PeliculaSerie> optionalPeliculaSerie = this.peliculaSerieRepository.findByTitulo(titulo);
 
             if(optionalPeliculaSerie.isPresent()){
 
-                peliculasSeries.add(optionalPeliculaSerie.get());
+                peliculasSeriesDto.add(this.peliculaSerieMapper.mapToDto(optionalPeliculaSerie.get()));
 
-                return peliculasSeries;
+                return peliculasSeriesDto;
 
             } else {
 
-                return peliculasSeries;
+                return peliculasSeriesDto;
 
             }
 
@@ -84,7 +97,10 @@ public class PeliculaSerieServiceImpl implements IPeliculaSerieService {
 
                 Genero genero = this.generoService.buscarPorNombre(nombreGenero).get();
 
-                return peliculaSerieRepository.findAllByGenero(genero);
+                return peliculaSerieRepository.findAllByGenero(genero)
+                        .stream()
+                        .map(this.peliculaSerieMapper::mapToDto)
+                        .collect(Collectors.toList());
 
             } else {
 
@@ -98,78 +114,91 @@ public class PeliculaSerieServiceImpl implements IPeliculaSerieService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<PeliculaSerie> buscarPorFechas(String desde, String hasta) {
+    public List<PeliculaSerieOutDto> buscarPorFechas(String desde, String hasta) {
 
         LocalDate fechaInicio = FechaUtil.formatear(desde);
         LocalDate fechaFinal = FechaUtil.formatear(hasta);
         FechaUtil.validarRango(fechaInicio, fechaFinal);
 
-        return this.peliculaSerieRepository.findAllByFechaDeCreacionBetween(fechaInicio, fechaFinal);
+        return this.peliculaSerieRepository.findAllByFechaDeCreacionBetween(fechaInicio, fechaFinal)
+                .stream()
+                .map(this.peliculaSerieMapper::mapToDto)
+                .collect(Collectors.toList());
 
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<PeliculaSerie> buscarPorCalificaciones(Byte desde, Byte hasta) {
+    public List<PeliculaSerieOutDto> buscarPorCalificaciones(Byte desde, Byte hasta) {
 
         PeliculaSerieUtil.validarCalificacion(desde);
         PeliculaSerieUtil.validarCalificacion(hasta);
         ValidacionGeneralUtil.validarRangoDeNumeros(desde, hasta);
 
-        return this.peliculaSerieRepository.findAllByCalificacionBetween(desde, hasta);
+        return this.peliculaSerieRepository.findAllByCalificacionBetween(desde, hasta)
+                .stream()
+                .map(this.peliculaSerieMapper::mapToDto)
+                .collect(Collectors.toList());
 
     }
 
     @Transactional(readOnly = false)
     @Override
-    public PeliculaSerie crear(PeliculaSerie peliculaSerie) {
+    public PeliculaSerieOutDto crear(PeliculaSerieInDto dto) {
 
-        PeliculaSerieUtil.validar(peliculaSerie);
-        peliculaSerie.setId(null);
+        ValidacionGeneralUtil.validarId(dto.getGeneroId());
+        PeliculaSerieUtil.validarDto(dto);
 
-        if(this.peliculaSerieRepository.existsByTitulo(peliculaSerie.getTitulo())){
+        if(this.peliculaSerieRepository.existsByTitulo(dto.getTitulo())){
             throw new IllegalArgumentException("La pelicula/serie ya existe.");
         }
 
         Optional<Genero> optionalGenero = this.generoService
-                .buscarPorNombre(peliculaSerie.getGenero().getNombre());
+                .buscarPorId(dto.getGeneroId());
 
         if(optionalGenero.isPresent()){
+
+            PeliculaSerie peliculaSerie = this.peliculaSerieMapper.mapToEntity(dto);
             peliculaSerie.setGenero(optionalGenero.get());
+
+            return this.peliculaSerieMapper.mapToDto(this.peliculaSerieRepository.save(peliculaSerie));
+
         } else {
             throw new IllegalArgumentException("No existe genero con ese nombre.");
         }
-
-        return this.peliculaSerieRepository.save(peliculaSerie);
 
     }
 
     @Transactional(readOnly = false)
     @Override
-    public PeliculaSerie actualizar(Long id, PeliculaSerie peliculaSerie) {
+    public PeliculaSerieOutDto actualizar(Long id, PeliculaSerieInDto dto) {
 
         ValidacionGeneralUtil.validarId(id);
-        PeliculaSerieUtil.validar(peliculaSerie);
-        peliculaSerie.setId(id);
-
-        if(this.peliculaSerieRepository.existsByTitulo(peliculaSerie.getTitulo())){
-            throw new IllegalArgumentException("Ya existe una pelicula/serie con ese título.");
-        }
-
-        Optional<Genero> optionalGenero = this.generoService
-                .buscarPorNombre(peliculaSerie.getGenero().getNombre());
-
-        if(optionalGenero.isPresent()){
-            peliculaSerie.setGenero(optionalGenero.get());
-        } else {
-            throw new IllegalArgumentException("No existe genero con ese nombre.");
-        }
+        PeliculaSerieUtil.validarDto(dto);
+        //peliculaSerie.setId(id);
 
         if(!this.peliculaSerieRepository.existsById(id)){
             throw new IllegalArgumentException("No existe pelicula/serie con ese ID.");
         }
 
-        return this.peliculaSerieRepository.save(peliculaSerie);
+        if(this.peliculaSerieRepository.existsByTitulo(dto.getTitulo())){
+            throw new IllegalArgumentException("Ya existe una pelicula/serie con ese título.");
+        }
+
+        Optional<Genero> optionalGenero = this.generoService
+                .buscarPorId(dto.getGeneroId());
+
+        if(optionalGenero.isPresent()){
+
+            PeliculaSerie peliculaSerie = this.peliculaSerieMapper.mapToEntity(dto);
+            peliculaSerie.setGenero(optionalGenero.get());
+            peliculaSerie.setId(id);
+
+            return this.peliculaSerieMapper.mapToDto(this.peliculaSerieRepository.save(peliculaSerie));
+
+        } else {
+            throw new IllegalArgumentException("No existe genero con ese nombre.");
+        }
 
     }
 

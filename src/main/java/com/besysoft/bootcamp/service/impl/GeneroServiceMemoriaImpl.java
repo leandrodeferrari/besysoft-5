@@ -78,8 +78,18 @@ public class GeneroServiceMemoriaImpl implements IGeneroService {
     }
 
     @Override
+    public Optional<Genero> buscarPorId(Long id) {
+        return this.generoRepository.buscarPorId(id);
+    }
+
+    @Override
     public boolean existePorNombre(String nombre) {
         return this.generoRepository.existePorNombre(nombre);
+    }
+
+    @Override
+    public boolean existePorId(Long id) {
+        return this.generoRepository.existePorId(id);
     }
 
 }

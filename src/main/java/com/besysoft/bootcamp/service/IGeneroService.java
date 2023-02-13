@@ -13,6 +13,8 @@ public interface IGeneroService {
     GeneroOutDto crear(GeneroInDto dto);
     GeneroOutDto actualizar(Long id, GeneroInDto genero);
     Optional<Genero> buscarPorNombre(String nombre);
+    Optional<Genero> buscarPorId(Long id);
     boolean existePorNombre(String nombre);
+    boolean existePorId(Long id);
 
 }

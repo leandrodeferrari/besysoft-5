@@ -85,8 +85,20 @@ public class GeneroServiceImpl implements IGeneroService {
 
     @Transactional(readOnly = true)
     @Override
+    public Optional<Genero> buscarPorId(Long id) {
+        return this.generoRepository.findById(id);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public boolean existePorNombre(String nombre) {
         return this.generoRepository.existsByNombre(nombre);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public boolean existePorId(Long id) {
+        return this.generoRepository.existsById(id);
     }
 
 }

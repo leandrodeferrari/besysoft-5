@@ -11,6 +11,7 @@ public interface IGeneroRepository {
     Genero crear(Genero genero);
     Genero actualizar(Long id, Genero genero);
     Optional<Genero> buscarPorNombre(String nombre);
+    Optional<Genero> buscarPorId(Long id);
     boolean existePorId(Long id);
     boolean existePorNombre(String nombre);
 

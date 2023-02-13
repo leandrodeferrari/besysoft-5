@@ -12,8 +12,8 @@ import org.mapstruct.Mappings;
 public interface IPersonajeMapper {
 
     @Mappings({
-            @Mapping(target = "peliculasSeries", ignore = true),
-            @Mapping(target = "id", ignore = true)
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "peliculasSeries", ignore = true)
     })
     Personaje mapToEntity(PersonajeInDto dto);
 

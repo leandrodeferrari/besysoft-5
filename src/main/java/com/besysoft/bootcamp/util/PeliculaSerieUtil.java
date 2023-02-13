@@ -1,6 +1,7 @@
 package com.besysoft.bootcamp.util;
 
 import com.besysoft.bootcamp.domain.PeliculaSerie;
+import com.besysoft.bootcamp.dto.request.PeliculaSerieInDto;
 
 public class PeliculaSerieUtil {
 
@@ -9,6 +10,14 @@ public class PeliculaSerieUtil {
         validarTitulo(peliculaSerie.getTitulo());
         validarCalificacion(peliculaSerie.getCalificacion());
         FechaUtil.validar(peliculaSerie.getFechaDeCreacion());
+
+    }
+
+    public static void validarDto(PeliculaSerieInDto dto){
+
+        validarTitulo(dto.getTitulo());
+        validarCalificacion(dto.getCalificacion());
+        FechaUtil.validar(FechaUtil.formatear(dto.getFechaDeCreacion()));
 
     }
 

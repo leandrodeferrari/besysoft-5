@@ -1,11 +1,13 @@
 package com.besysoft.bootcamp.controller;
 
-import com.besysoft.bootcamp.domain.PeliculaSerie;
+import com.besysoft.bootcamp.dto.request.PeliculaSerieInDto;
 import com.besysoft.bootcamp.service.IPeliculaSerieService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/peliculas-series")
@@ -60,10 +62,10 @@ public class PeliculaSerieController {
     }
 
     @PostMapping
-    public ResponseEntity<?> crear(@RequestBody PeliculaSerie peliculaSerie){
+    public ResponseEntity<?> crear(@Valid @RequestBody PeliculaSerieInDto dto){
 
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(this.peliculaSerieService.crear(peliculaSerie));
+            return ResponseEntity.status(HttpStatus.CREATED).body(this.peliculaSerieService.crear(dto));
         } catch (IllegalArgumentException ex){
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (RuntimeException ex){
@@ -74,10 +76,10 @@ public class PeliculaSerieController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizar(@PathVariable Long id,
-                                        @RequestBody PeliculaSerie peliculaSerie){
+                                        @Valid @RequestBody PeliculaSerieInDto dto){
 
         try {
-            return ResponseEntity.ok(this.peliculaSerieService.actualizar(id, peliculaSerie));
+            return ResponseEntity.ok(this.peliculaSerieService.actualizar(id, dto));
         } catch (IllegalArgumentException ex){
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (RuntimeException ex){

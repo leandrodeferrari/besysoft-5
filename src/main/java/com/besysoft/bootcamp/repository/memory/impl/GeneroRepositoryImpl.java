@@ -61,6 +61,11 @@ public class GeneroRepositoryImpl implements IGeneroRepository {
     }
 
     @Override
+    public Optional<Genero> buscarPorId(Long id) {
+        return this.generos.stream().filter(g -> g.getId().equals(id)).findFirst();
+    }
+
+    @Override
     public boolean existePorId(Long id) {
         return this.generos.stream().anyMatch(g -> g.getId().equals(id));
     }
