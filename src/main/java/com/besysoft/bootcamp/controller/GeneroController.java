@@ -3,6 +3,8 @@ package com.besysoft.bootcamp.controller;
 import com.besysoft.bootcamp.dto.request.GeneroInDto;
 import com.besysoft.bootcamp.service.IGeneroService;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -13,6 +15,7 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/generos")
 public class GeneroController {
@@ -29,6 +32,7 @@ public class GeneroController {
         try {
             return ResponseEntity.ok(this.generoService.obtenerTodos());
         } catch (RuntimeException ex){
+            log.warn("Ocurrio un error imprevisto: " + ex.getMessage());
             return ResponseEntity.internalServerError().body(ex.getMessage());
         }
 
@@ -41,8 +45,10 @@ public class GeneroController {
         if(result.hasErrors()){
 
             Map<String, String> validaciones = new HashMap<>();
+            log.info("Oucrrio un error con validaciones.");
 
             result.getFieldErrors().forEach(error -> {
+                log.info("Atributo: " + error.getField() + ", validacion: " + error.getDefaultMessage());
                 validaciones.put(error.getField(), error.getDefaultMessage());
             });
 

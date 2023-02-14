@@ -1,0 +1,14 @@
+2023-02-14 18:54:45,421 INFO org.springframework.boot.StartupInfoLogger [main] Starting BootcampApplication using Java 17.0.5 on DESKTOP-464VQAU with PID 18756 (C:\Users\pc\Documents\besysoft\ejercicios\ejercicio-5\target\classes started by pc in C:\Users\pc\Documents\besysoft\ejercicios\ejercicio-5)
+2023-02-14 18:54:45,395 INFO org.hibernate.validator.internal.util.Version [background-preinit] HV000001: Hibernate Validator 6.2.5.Final
+2023-02-14 18:54:45,430 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2023-02-14 18:54:48,936 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-02-14 18:54:49,346 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 363 ms. Found 3 JPA repository interfaces.
+2023-02-14 18:54:52,523 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2023-02-14 18:54:52,573 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2023-02-14 18:54:52,577 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2023-02-14 18:54:52,578 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.71]
+2023-02-14 18:54:53,172 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2023-02-14 18:54:53,176 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 7482 ms
+2023-02-14 18:54:53,752 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2023-02-14 18:54:54,774 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2023-02-14 18:54:57,180 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
