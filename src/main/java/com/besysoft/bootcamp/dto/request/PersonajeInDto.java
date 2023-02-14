@@ -2,17 +2,12 @@ package com.besysoft.bootcamp.dto.request;
 
 import lombok.Data;
 
-import org.hibernate.validator.constraints.Length;
-
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 @Data
 public class PersonajeInDto {
 
-    @Length(message = "El nombre no puede tener más de 30 carácteres.", max = 30)
+    @Size(message = "El nombre no puede ser mayor a 30 carácteres.", max = 30)
     @NotBlank(message = "El nombre no puede ser nulo o vacío.")
     private String nombre;
 
@@ -24,6 +19,7 @@ public class PersonajeInDto {
     @NotNull(message = "El peso no puede ser nulo.")
     private Double peso;
 
+    @Size(message = "La historia no puede ser mayor a 255 carácteres.", max = 255)
     @NotBlank(message = "La historia no puede ser nula o vacía.")
     private String historia;
 

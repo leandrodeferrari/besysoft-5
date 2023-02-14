@@ -97,7 +97,7 @@ public class PeliculaSerieServiceImpl implements IPeliculaSerieService {
 
                 Genero genero = this.generoService.buscarPorNombre(nombreGenero).get();
 
-                return peliculaSerieRepository.findAllByGenero(genero)
+                return this.peliculaSerieRepository.findAllByGenero(genero)
                         .stream()
                         .map(this.peliculaSerieMapper::mapToDto)
                         .collect(Collectors.toList());
@@ -175,7 +175,6 @@ public class PeliculaSerieServiceImpl implements IPeliculaSerieService {
 
         ValidacionGeneralUtil.validarId(id);
         PeliculaSerieUtil.validarDto(dto);
-        //peliculaSerie.setId(id);
 
         if(!this.peliculaSerieRepository.existsById(id)){
             throw new IllegalArgumentException("No existe pelicula/serie con ese ID.");

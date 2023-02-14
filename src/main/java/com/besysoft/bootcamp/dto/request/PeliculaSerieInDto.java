@@ -2,14 +2,12 @@ package com.besysoft.bootcamp.dto.request;
 
 import lombok.Data;
 
-import org.hibernate.validator.constraints.Length;
-
 import javax.validation.constraints.*;
 
 @Data
 public class PeliculaSerieInDto {
 
-    @Length(message = "El título no puede tener más de 50 carácteres.", max = 50)
+    @Size(message = "El título no puede ser mayor a 50 carácteres.", max = 50)
     @NotBlank(message = "El título no puede ser nulo o vacío.")
     private String titulo;
 

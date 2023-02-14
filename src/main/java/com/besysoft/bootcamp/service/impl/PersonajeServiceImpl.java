@@ -36,14 +36,14 @@ public class PersonajeServiceImpl implements IPersonajeService {
         if(nombre == null && edad == null){
             return this.personajeRepository.findAll()
                     .stream()
-                    .map(personajeMapper::mapToDto)
+                    .map(this.personajeMapper::mapToDto)
                     .collect(Collectors.toList());
         }
 
         if (nombre != null && edad != null){
             return this.personajeRepository.findAllByNombreAndEdad(nombre, edad)
                     .stream()
-                    .map(personajeMapper::mapToDto)
+                    .map(this.personajeMapper::mapToDto)
                     .collect(Collectors.toList());
         }
 
@@ -51,13 +51,13 @@ public class PersonajeServiceImpl implements IPersonajeService {
             PersonajeUtil.validarNombreVacio(nombre);
             return this.personajeRepository.findAllByNombre(nombre)
                     .stream()
-                    .map(personajeMapper::mapToDto)
+                    .map(this.personajeMapper::mapToDto)
                     .collect(Collectors.toList());
         } else {
             PersonajeUtil.validarEdadMinima(edad);
             return this.personajeRepository.findAllByEdad(edad)
                     .stream()
-                    .map(personajeMapper::mapToDto)
+                    .map(this.personajeMapper::mapToDto)
                     .collect(Collectors.toList());
         }
 
@@ -73,7 +73,7 @@ public class PersonajeServiceImpl implements IPersonajeService {
 
         return this.personajeRepository.findAllByEdadBetween(desde, hasta)
                 .stream()
-                .map(personajeMapper::mapToDto)
+                .map(this.personajeMapper::mapToDto)
                 .collect(Collectors.toList());
 
     }

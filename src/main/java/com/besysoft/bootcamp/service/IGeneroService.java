@@ -11,7 +11,7 @@ public interface IGeneroService {
 
     List<GeneroOutDto> obtenerTodos();
     GeneroOutDto crear(GeneroInDto dto);
-    GeneroOutDto actualizar(Long id, GeneroInDto genero);
+    GeneroOutDto actualizar(Long id, GeneroInDto dto);
     Optional<Genero> buscarPorNombre(String nombre);
     Optional<Genero> buscarPorId(Long id);
     boolean existePorNombre(String nombre);

@@ -1,16 +1,15 @@
 package com.besysoft.bootcamp.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 import java.io.Serializable;
 
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
-@Data
+@AllArgsConstructor
 @Entity
 @Table(name = "generos")
 public class Genero implements Serializable {

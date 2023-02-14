@@ -33,7 +33,7 @@ public class GeneroServiceMemoriaImpl implements IGeneroService {
     public List<GeneroOutDto> obtenerTodos() {
         return this.generoRepository.obtenerTodos()
                 .stream()
-                .map(generoMapper::mapToDto)
+                .map(this.generoMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 

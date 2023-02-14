@@ -35,7 +35,7 @@ public class GeneroServiceImpl implements IGeneroService {
     public List<GeneroOutDto> obtenerTodos() {
         return this.generoRepository.findAll()
                 .stream()
-                .map(generoMapper::mapToDto)
+                .map(this.generoMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 

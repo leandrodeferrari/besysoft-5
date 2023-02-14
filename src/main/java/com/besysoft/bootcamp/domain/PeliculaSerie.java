@@ -3,8 +3,7 @@ package com.besysoft.bootcamp.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -14,8 +13,10 @@ import java.time.LocalDate;
 
 import java.util.List;
 
+@Getter
+@Setter
 @NoArgsConstructor
-@Data
+@AllArgsConstructor
 @Entity
 @Table(name = "peliculas_series")
 public class PeliculaSerie implements Serializable {

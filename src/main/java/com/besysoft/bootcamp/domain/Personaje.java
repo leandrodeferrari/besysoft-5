@@ -2,8 +2,7 @@ package com.besysoft.bootcamp.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,8 +10,10 @@ import java.io.Serializable;
 
 import java.util.List;
 
+@Getter
+@Setter
 @NoArgsConstructor
-@Data
+@AllArgsConstructor
 @Entity
 @Table(name = "personajes")
 public class Personaje implements Serializable {
