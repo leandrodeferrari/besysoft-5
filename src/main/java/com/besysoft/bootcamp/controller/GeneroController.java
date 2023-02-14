@@ -5,9 +5,13 @@ import com.besysoft.bootcamp.service.IGeneroService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/generos")
@@ -31,7 +35,20 @@ public class GeneroController {
     }
 
     @PostMapping
-    public ResponseEntity<?> crear(@Valid @RequestBody GeneroInDto dto){
+    public ResponseEntity<?> crear(@Valid @RequestBody GeneroInDto dto,
+                                   BindingResult result){
+
+        if(result.hasErrors()){
+
+            Map<String, String> validaciones = new HashMap<>();
+
+            result.getFieldErrors().forEach(error -> {
+                validaciones.put(error.getField(), error.getDefaultMessage());
+            });
+
+            return ResponseEntity.badRequest().body(validaciones);
+
+        }
 
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(this.generoService.crear(dto));
@@ -45,7 +62,20 @@ public class GeneroController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizar(@PathVariable Long id,
-                                        @Valid @RequestBody GeneroInDto dto){
+                                        @Valid @RequestBody GeneroInDto dto,
+                                        BindingResult result){
+
+        if(result.hasErrors()){
+
+            Map<String, String> validaciones = new HashMap<>();
+
+            result.getFieldErrors().forEach(error -> {
+                validaciones.put(error.getField(), error.getDefaultMessage());
+            });
+
+            return ResponseEntity.badRequest().body(validaciones);
+
+        }
 
         try {
             return ResponseEntity.ok(this.generoService.actualizar(id, dto));

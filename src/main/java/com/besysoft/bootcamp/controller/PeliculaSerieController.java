@@ -5,9 +5,13 @@ import com.besysoft.bootcamp.service.IPeliculaSerieService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/peliculas-series")
@@ -62,7 +66,20 @@ public class PeliculaSerieController {
     }
 
     @PostMapping
-    public ResponseEntity<?> crear(@Valid @RequestBody PeliculaSerieInDto dto){
+    public ResponseEntity<?> crear(@Valid @RequestBody PeliculaSerieInDto dto,
+                                   BindingResult result){
+
+        if(result.hasErrors()){
+
+            Map<String, String> validaciones = new HashMap<>();
+
+            result.getFieldErrors().forEach(error -> {
+                validaciones.put(error.getField(), error.getDefaultMessage());
+            });
+
+            return ResponseEntity.badRequest().body(validaciones);
+
+        }
 
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(this.peliculaSerieService.crear(dto));
@@ -76,7 +93,20 @@ public class PeliculaSerieController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizar(@PathVariable Long id,
-                                        @Valid @RequestBody PeliculaSerieInDto dto){
+                                        @Valid @RequestBody PeliculaSerieInDto dto,
+                                        BindingResult result){
+
+        if(result.hasErrors()){
+
+            Map<String, String> validaciones = new HashMap<>();
+
+            result.getFieldErrors().forEach(error -> {
+                validaciones.put(error.getField(), error.getDefaultMessage());
+            });
+
+            return ResponseEntity.badRequest().body(validaciones);
+
+        }
 
         try {
             return ResponseEntity.ok(this.peliculaSerieService.actualizar(id, dto));
