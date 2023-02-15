@@ -1,7 +1,0 @@
-2023-02-15 10:30:20,840 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
-2023-02-15 10:30:20,849 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
-2023-02-15 10:30:20,855 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 4 ms
-2023-02-15 10:30:21,606 INFO com.besysoft.bootcamp.controller.PersonajeController [http-nio-8080-exec-1] Ocurrio una validacion, en el metodo crear().
-2023-02-15 10:30:21,620 INFO com.besysoft.bootcamp.controller.PersonajeController [http-nio-8080-exec-1] Atributo: nombre- Validacion: El nombre no puede ser nulo o vacío.
-2023-02-15 10:30:21,623 INFO com.besysoft.bootcamp.controller.PersonajeController [http-nio-8080-exec-1] Atributo: peso- Validacion: El peso no puede ser mayor a 500.
-2023-02-15 10:30:59,969 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
