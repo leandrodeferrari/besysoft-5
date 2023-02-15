@@ -32,7 +32,7 @@ public class GeneroController {
         try {
             return ResponseEntity.ok(this.generoService.obtenerTodos());
         } catch (RuntimeException ex){
-            log.warn("Ocurrio un error imprevisto: " + ex.getMessage());
+            log.warn("Ocurrio algo inesperado en el endpoint obtenerTodos(): " + ex.getMessage());
             return ResponseEntity.internalServerError().body(ex.getMessage());
         }
 
@@ -45,10 +45,10 @@ public class GeneroController {
         if(result.hasErrors()){
 
             Map<String, String> validaciones = new HashMap<>();
-            log.info("Oucrrio un error con validaciones.");
+            log.info("Ocurrio una validacion, en el metodo crear().");
 
             result.getFieldErrors().forEach(error -> {
-                log.info("Atributo: " + error.getField() + ", validacion: " + error.getDefaultMessage());
+                log.info("Atributo: " + error.getField() + " - Validacion: " + error.getDefaultMessage());
                 validaciones.put(error.getField(), error.getDefaultMessage());
             });
 
@@ -59,8 +59,10 @@ public class GeneroController {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(this.generoService.crear(dto));
         } catch (IllegalArgumentException ex){
+            log.info("Ocurrio una validacion personalizada, en el metodo crear(): " + ex.getMessage());
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (RuntimeException ex){
+            log.warn("Ocurrio algo inesperado en el servidor, en el metodo crear(): " + ex.getMessage());
             return ResponseEntity.internalServerError().body(ex.getMessage());
         }
 
@@ -74,8 +76,10 @@ public class GeneroController {
         if(result.hasErrors()){
 
             Map<String, String> validaciones = new HashMap<>();
+            log.info("Ocurrio una validacion, en el metodo actualizar().");
 
             result.getFieldErrors().forEach(error -> {
+                log.info("Atributo: " + error.getField() + " - Validacion: " + error.getDefaultMessage());
                 validaciones.put(error.getField(), error.getDefaultMessage());
             });
 
@@ -86,8 +90,10 @@ public class GeneroController {
         try {
             return ResponseEntity.ok(this.generoService.actualizar(id, dto));
         } catch (IllegalArgumentException ex){
+            log.info("Ocurrio una validacion personalizada, en el metodo actualizar(): " + ex.getMessage());
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (RuntimeException ex){
+            log.warn("Ocurrio algo inesperado en el servidor, en el metodo actualizar(): " + ex.getMessage());
             return ResponseEntity.internalServerError().body(ex.getMessage());
         }
 

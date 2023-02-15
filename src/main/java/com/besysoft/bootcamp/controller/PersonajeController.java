@@ -3,6 +3,8 @@ package com.besysoft.bootcamp.controller;
 import com.besysoft.bootcamp.dto.request.PersonajeInDto;
 import com.besysoft.bootcamp.service.IPersonajeService;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -13,6 +15,7 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/personajes")
 public class PersonajeController {
@@ -30,8 +33,10 @@ public class PersonajeController {
         try {
             return ResponseEntity.ok(this.personajeService.buscarPorFiltros(nombre, edad));
         } catch (IllegalArgumentException ex){
+            log.info("Ocurrio una validacion personalizada, en el metodo buscarPorFiltros(): " + ex.getMessage());
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch(RuntimeException ex){
+            log.warn("Ocurrio algo inesperado en el servidor, en el metodo buscarPorFiltros(): " + ex.getMessage());
             return ResponseEntity.internalServerError().body(ex.getMessage());
         }
 
@@ -44,8 +49,10 @@ public class PersonajeController {
         try {
             return ResponseEntity.ok(this.personajeService.buscarPorEdades(desde, hasta));
         } catch (IllegalArgumentException ex){
+            log.info("Ocurrio una validacion personalizada, en el metodo buscarPorEdades(): " + ex.getMessage());
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (RuntimeException ex){
+            log.warn("Ocurrio algo inesperado en el servidor, en el metodo buscarPorEdades(): " + ex.getMessage());
             return ResponseEntity.internalServerError().body(ex.getMessage());
         }
 
@@ -58,8 +65,10 @@ public class PersonajeController {
         if(result.hasErrors()){
 
             Map<String, String> validaciones = new HashMap<>();
+            log.info("Ocurrio una validacion, en el metodo crear().");
 
             result.getFieldErrors().forEach(error -> {
+                log.info("Atributo: " + error.getField() + " - Validacion: " + error.getDefaultMessage());
                 validaciones.put(error.getField(), error.getDefaultMessage());
             });
 
@@ -70,8 +79,10 @@ public class PersonajeController {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(this.personajeService.crear(dto));
         } catch (IllegalArgumentException ex){
+            log.info("Ocurrio una validacion personalizada, en el metodo crear(): " + ex.getMessage());
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (RuntimeException ex){
+            log.warn("Ocurrio algo inesperado en el servidor, en el metodo crear(): " + ex.getMessage());
             return ResponseEntity.internalServerError().body(ex.getMessage());
         }
 
@@ -85,8 +96,10 @@ public class PersonajeController {
         if(result.hasErrors()){
 
             Map<String, String> validaciones = new HashMap<>();
+            log.info("Ocurrio una validacion, en el metodo actualizar().");
 
             result.getFieldErrors().forEach(error -> {
+                log.info("Atributo: " + error.getField() + " - Validacion: " + error.getDefaultMessage());
                 validaciones.put(error.getField(), error.getDefaultMessage());
             });
 
@@ -97,8 +110,10 @@ public class PersonajeController {
         try {
             return ResponseEntity.ok(this.personajeService.actualizar(id, dto));
         } catch (IllegalArgumentException ex){
+            log.info("Ocurrio una validacion personalizada, en el metodo actualizar(): " + ex.getMessage());
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (RuntimeException ex){
+            log.warn("Ocurrio algo inesperado en el servidor, en el metodo actualizar(): " + ex.getMessage());
             return ResponseEntity.internalServerError().body(ex.getMessage());
         }
 
