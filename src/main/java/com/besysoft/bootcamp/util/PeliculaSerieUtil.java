@@ -3,7 +3,16 @@ package com.besysoft.bootcamp.util;
 import com.besysoft.bootcamp.domain.PeliculaSerie;
 import com.besysoft.bootcamp.dto.request.PeliculaSerieInDto;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class PeliculaSerieUtil {
+
+    public static final String CALIFICACION_NULA = "La calificación no puede ser nula.";
+    public static final String CALIFICACION_RANGO = "La calificación no puede ser menor a 1 o mayor a 5.";
+    public static final String TITULO_NULO_VACIO = "El título no puede ser nulo o vacío.";
+    public static final String TITULO_VACIO = "El título no puede ser vacío.";
+    public static final String NOMBRE_GENERO_VACIO = "El nombre del genero, no puede ser vacío.";
 
     public static void validar(PeliculaSerie peliculaSerie){
 
@@ -24,11 +33,13 @@ public class PeliculaSerieUtil {
     public static void validarCalificacion(Byte calificacion){
 
         if(calificacion == null){
-            throw new IllegalArgumentException("La calificación no puede ser nula.");
+            log.info("Ocurrio una validacion personalizada, en el metodo validarCalificacion(): " + CALIFICACION_NULA);
+            throw new IllegalArgumentException(CALIFICACION_NULA);
         }
 
         if(calificacion < 1 || calificacion > 5){
-            throw new IllegalArgumentException("La calificación no puede ser menor a 1 o mayor a 5.");
+            log.info("Ocurrio una validacion personalizada, en el metodo validarCalificacion(): " + CALIFICACION_RANGO);
+            throw new IllegalArgumentException(CALIFICACION_RANGO);
         }
 
     }
@@ -36,7 +47,8 @@ public class PeliculaSerieUtil {
     public static void validarTitulo(String titulo){
 
         if(titulo.isBlank()){
-            throw new IllegalArgumentException("El título no puede ser nulo o vacío.");
+            log.info("Ocurrio una validacion personalizada, en el metodo validarTitulo(): " + TITULO_NULO_VACIO);
+            throw new IllegalArgumentException(TITULO_NULO_VACIO);
         }
 
     }
@@ -44,7 +56,8 @@ public class PeliculaSerieUtil {
     public static void validarTituloVacio(String titulo){
 
         if(titulo.isEmpty()){
-            throw new IllegalArgumentException("El título no puede ser vacío.");
+            log.info("Ocurrio una validacion personalizada, en el metodo validarTituloVacio(): " + TITULO_VACIO);
+            throw new IllegalArgumentException(TITULO_VACIO);
         }
 
     }
@@ -52,7 +65,8 @@ public class PeliculaSerieUtil {
     public static void validarNombreGeneroVacio(String nombreGenero){
 
         if(nombreGenero.isEmpty()){
-            throw new IllegalArgumentException("El nombre del genero, no puede ser vacío.");
+            log.info("Ocurrio una validacion personalizada, en el metodo validarNombreGeneroVacio(): " + NOMBRE_GENERO_VACIO);
+            throw new IllegalArgumentException(NOMBRE_GENERO_VACIO);
         }
 
     }

@@ -9,6 +9,8 @@ import com.besysoft.bootcamp.service.IGeneroService;
 import com.besysoft.bootcamp.util.GeneroUtil;
 import com.besysoft.bootcamp.util.ValidacionGeneralUtil;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @ConditionalOnProperty(prefix = "app", name = "type-data", havingValue = "memory")
 @Service
 public class GeneroServiceMemoriaImpl implements IGeneroService {
