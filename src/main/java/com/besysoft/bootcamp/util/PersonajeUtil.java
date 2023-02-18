@@ -16,6 +16,7 @@ public class PersonajeUtil {
     public static final String PESO_NULO = "El peso no puede ser nulo.";
     public static final String NOMBRE_NULO_VACIO = "El nombre no puede ser nulo o vacío.";
     public static final String NOMBRE_VACIO = "El nombre no puede ser vacío.";
+    public static final String NO_EXISTE_POR_ID = "No existe personaje con ese ID.";
 
     public static void validar(Personaje personaje){
 

@@ -49,7 +49,8 @@ public class GeneroServiceImpl implements IGeneroService {
         GeneroUtil.validarNombre(dto.getNombre());
 
         if(this.generoRepository.existsByNombre(dto.getNombre())){
-            throw new IllegalArgumentException("El genero ya existe.");
+            log.info("Ocurrio una validacion personalizada, en el metodo crear(): " + GeneroUtil.EXISTE);
+            throw new IllegalArgumentException(GeneroUtil.EXISTE);
         }
 
         Genero genero = this.generoRepository.save(this.generoMapper.mapToEntity(dto));
@@ -66,11 +67,13 @@ public class GeneroServiceImpl implements IGeneroService {
         GeneroUtil.validarNombre(dto.getNombre());
 
         if(this.generoRepository.existsByNombre(dto.getNombre())){
-            throw new IllegalArgumentException("Ya existe un genero con ese nombre.");
+            log.info("Ocurrio una validacion personalizada, en el metodo actualizar(): " + GeneroUtil.EXISTE_POR_NOMBRE);
+            throw new IllegalArgumentException(GeneroUtil.EXISTE_POR_NOMBRE);
         }
 
         if(!this.generoRepository.existsById(id)){
-            throw new IllegalArgumentException("No existe genero con ese ID.");
+            log.info("Ocurrio una validacion personalizada, en el metodo actualizar(): " + GeneroUtil.NO_EXISTE_POR_ID);
+            throw new IllegalArgumentException(GeneroUtil.NO_EXISTE_POR_ID);
         }
 
         Genero genero = this.generoMapper.mapToEntity(dto);

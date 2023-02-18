@@ -13,6 +13,10 @@ public class PeliculaSerieUtil {
     public static final String TITULO_NULO_VACIO = "El título no puede ser nulo o vacío.";
     public static final String TITULO_VACIO = "El título no puede ser vacío.";
     public static final String NOMBRE_GENERO_VACIO = "El nombre del genero, no puede ser vacío.";
+    public static final String EXISTE = "La pelicula/serie ya existe.";
+    public static final String NO_EXISTE_GENERO_POR_NOMBRE = "No existe genero con ese nombre.";
+    public static final String EXISTE_POR_TITULO = "Ya existe una pelicula/serie con ese título.";
+    public static final String NO_EXISTE_POR_ID = "No existe pelicula/serie con ese ID.";
 
     public static void validar(PeliculaSerie peliculaSerie){
 

@@ -101,7 +101,8 @@ public class PersonajeServiceImpl implements IPersonajeService {
         PersonajeUtil.validarDto(dto);
 
         if(!this.personajeRepository.existsById(id)){
-            throw new IllegalArgumentException("No existe personaje con ese ID.");
+            log.info("Ocurrio una validacion personalizada, en el metodo actualizar(): " + PersonajeUtil.NO_EXISTE_POR_ID);
+            throw new IllegalArgumentException(PersonajeUtil.NO_EXISTE_POR_ID);
         }
 
         Personaje personaje = this.personajeMapper.mapToEntity(dto);

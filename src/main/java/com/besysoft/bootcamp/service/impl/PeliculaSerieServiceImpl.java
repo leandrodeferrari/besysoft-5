@@ -66,7 +66,8 @@ public class PeliculaSerieServiceImpl implements IPeliculaSerieService {
 
             } else {
 
-                throw new IllegalArgumentException("No existe genero con ese nombre.");
+                log.info("Ocurrio una validacion personalizada, en el metodo buscarPorFiltros(): " + PeliculaSerieUtil.NO_EXISTE_GENERO_POR_NOMBRE);
+                throw new IllegalArgumentException(PeliculaSerieUtil.NO_EXISTE_GENERO_POR_NOMBRE);
 
             }
 
@@ -80,17 +81,10 @@ public class PeliculaSerieServiceImpl implements IPeliculaSerieService {
 
             Optional<PeliculaSerie> optionalPeliculaSerie = this.peliculaSerieRepository.findByTitulo(titulo);
 
-            if(optionalPeliculaSerie.isPresent()){
+            optionalPeliculaSerie.ifPresent
+                    (peliculaSerie -> peliculasSeriesDto.add(this.peliculaSerieMapper.mapToDto(peliculaSerie)));
 
-                peliculasSeriesDto.add(this.peliculaSerieMapper.mapToDto(optionalPeliculaSerie.get()));
-
-                return peliculasSeriesDto;
-
-            } else {
-
-                return peliculasSeriesDto;
-
-            }
+            return peliculasSeriesDto;
 
         } else {
 
@@ -107,7 +101,8 @@ public class PeliculaSerieServiceImpl implements IPeliculaSerieService {
 
             } else {
 
-                throw new IllegalArgumentException("No existe genero con ese nombre.");
+                log.info("Ocurrio una validacion personalizada, en el metodo buscarPorFiltros(): " + PeliculaSerieUtil.NO_EXISTE_GENERO_POR_NOMBRE);
+                throw new IllegalArgumentException(PeliculaSerieUtil.NO_EXISTE_GENERO_POR_NOMBRE);
 
             }
 
@@ -153,7 +148,8 @@ public class PeliculaSerieServiceImpl implements IPeliculaSerieService {
         PeliculaSerieUtil.validarDto(dto);
 
         if(this.peliculaSerieRepository.existsByTitulo(dto.getTitulo())){
-            throw new IllegalArgumentException("La pelicula/serie ya existe.");
+            log.info("Ocurrio una validacion personalizada, en el metodo crear(): " + PeliculaSerieUtil.EXISTE);
+            throw new IllegalArgumentException(PeliculaSerieUtil.EXISTE);
         }
 
         Optional<Genero> optionalGenero = this.generoService
@@ -167,7 +163,10 @@ public class PeliculaSerieServiceImpl implements IPeliculaSerieService {
             return this.peliculaSerieMapper.mapToDto(this.peliculaSerieRepository.save(peliculaSerie));
 
         } else {
-            throw new IllegalArgumentException("No existe genero con ese nombre.");
+
+            log.info("Ocurrio una validacion personalizada, en el metodo crear(): " + PeliculaSerieUtil.NO_EXISTE_GENERO_POR_NOMBRE);
+            throw new IllegalArgumentException(PeliculaSerieUtil.NO_EXISTE_GENERO_POR_NOMBRE);
+
         }
 
     }
@@ -180,11 +179,13 @@ public class PeliculaSerieServiceImpl implements IPeliculaSerieService {
         PeliculaSerieUtil.validarDto(dto);
 
         if(!this.peliculaSerieRepository.existsById(id)){
-            throw new IllegalArgumentException("No existe pelicula/serie con ese ID.");
+            log.info("Ocurrio una validacion personalizada, en el metodo actualizar(): " + PeliculaSerieUtil.NO_EXISTE_POR_ID);
+            throw new IllegalArgumentException(PeliculaSerieUtil.NO_EXISTE_POR_ID);
         }
 
         if(this.peliculaSerieRepository.existsByTitulo(dto.getTitulo())){
-            throw new IllegalArgumentException("Ya existe una pelicula/serie con ese título.");
+            log.info("Ocurrio una validacion personalizada, en el metodo actualizar(): " + PeliculaSerieUtil.EXISTE_POR_TITULO);
+            throw new IllegalArgumentException(PeliculaSerieUtil.EXISTE_POR_TITULO);
         }
 
         Optional<Genero> optionalGenero = this.generoService
@@ -199,7 +200,10 @@ public class PeliculaSerieServiceImpl implements IPeliculaSerieService {
             return this.peliculaSerieMapper.mapToDto(this.peliculaSerieRepository.save(peliculaSerie));
 
         } else {
-            throw new IllegalArgumentException("No existe genero con ese nombre.");
+
+            log.info("Ocurrio una validacion personalizada, en el metodo actualizar(): " + PeliculaSerieUtil.NO_EXISTE_GENERO_POR_NOMBRE);
+            throw new IllegalArgumentException(PeliculaSerieUtil.NO_EXISTE_GENERO_POR_NOMBRE);
+
         }
 
     }

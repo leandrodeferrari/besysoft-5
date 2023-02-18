@@ -1,0 +1,2 @@
+2023-02-18 17:45:03,878 INFO com.besysoft.bootcamp.util.ValidacionGeneralUtil [http-nio-8080-exec-3] Ocurrio una validacion personalizada, en el metodo validarRangoDeNumeros(): Rango inválido.
+2023-02-18 17:45:03,899 INFO com.besysoft.bootcamp.controller.PersonajeController [http-nio-8080-exec-3] Ocurrio una validacion personalizada, en el metodo buscarPorEdades(): Rango inválido.

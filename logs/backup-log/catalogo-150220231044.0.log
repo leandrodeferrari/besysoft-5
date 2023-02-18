@@ -1,7 +1,0 @@
-2023-02-15 10:44:56,344 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-2] Initializing Spring DispatcherServlet 'dispatcherServlet'
-2023-02-15 10:44:56,361 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-2] Initializing Servlet 'dispatcherServlet'
-2023-02-15 10:44:56,371 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-2] Completed initialization in 7 ms
-2023-02-15 10:44:57,350 INFO com.besysoft.bootcamp.controller.PersonajeController [http-nio-8080-exec-2] Ocurrio una validacion, en el metodo crear().
-2023-02-15 10:44:57,366 INFO com.besysoft.bootcamp.controller.PersonajeController [http-nio-8080-exec-2] Atributo: historia - Validacion: La historia no puede ser nula o vacía.
-2023-02-15 10:44:57,368 INFO com.besysoft.bootcamp.controller.PersonajeController [http-nio-8080-exec-2] Atributo: peso - Validacion: El peso no puede ser mayor a 500.
-2023-02-15 10:44:57,373 INFO com.besysoft.bootcamp.controller.PersonajeController [http-nio-8080-exec-2] Atributo: nombre - Validacion: El nombre no puede ser nulo o vacío.

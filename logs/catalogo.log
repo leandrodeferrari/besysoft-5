@@ -1,7 +1,5 @@
-2023-02-18 17:06:01,435 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2023-02-18 17:06:03,734 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
-2023-02-18 17:06:04,003 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
-2023-02-18 17:06:04,067 INFO org.springframework.boot.StartupInfoLogger [main] Started BootcampApplication in 35.481 seconds (JVM running for 47.758)
-2023-02-18 17:06:09,607 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
-2023-02-18 17:06:09,720 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
-2023-02-18 17:06:09,912 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
+2023-02-18 17:46:11,404 INFO com.besysoft.bootcamp.util.FechaUtil [http-nio-8080-exec-6] Ocurrio una validacion personalizada, en el metodo validarRango(): Rango de fecha inválido.
+2023-02-18 17:46:11,417 INFO com.besysoft.bootcamp.controller.PeliculaSerieController [http-nio-8080-exec-6] Ocurrio una validacion personalizada, en el metodo buscarPorFechas(): Rango de fecha inválido.
+2023-02-18 17:46:33,822 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-02-18 17:46:33,845 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2023-02-18 17:46:33,924 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
