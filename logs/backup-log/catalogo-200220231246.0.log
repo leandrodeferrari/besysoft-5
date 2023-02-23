@@ -1,0 +1,2 @@
+2023-02-20 12:46:48,200 INFO com.besysoft.bootcamp.service.impl.PeliculaSerieServiceImpl [http-nio-8080-exec-8] Ocurrio una validacion personalizada, en el metodo crear(): La pelicula/serie ya existe.
+2023-02-20 12:46:48,223 INFO com.besysoft.bootcamp.controller.PeliculaSerieController [http-nio-8080-exec-8] Ocurrio una validacion personalizada, en el metodo crear(): La pelicula/serie ya existe.

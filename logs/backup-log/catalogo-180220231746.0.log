@@ -1,0 +1,5 @@
+2023-02-18 17:46:11,404 INFO com.besysoft.bootcamp.util.FechaUtil [http-nio-8080-exec-6] Ocurrio una validacion personalizada, en el metodo validarRango(): Rango de fecha inválido.
+2023-02-18 17:46:11,417 INFO com.besysoft.bootcamp.controller.PeliculaSerieController [http-nio-8080-exec-6] Ocurrio una validacion personalizada, en el metodo buscarPorFechas(): Rango de fecha inválido.
+2023-02-18 17:46:33,822 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-02-18 17:46:33,845 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2023-02-18 17:46:33,924 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
