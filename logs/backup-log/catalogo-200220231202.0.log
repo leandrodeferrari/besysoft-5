@@ -1,5 +1,0 @@
-2023-02-20 12:02:17,512 INFO com.besysoft.bootcamp.service.impl.PeliculaSerieServiceImpl [http-nio-8080-exec-3] Ocurrio una validacion personalizada, en el metodo crear(): La pelicula/serie ya existe.
-2023-02-20 12:02:17,536 INFO com.besysoft.bootcamp.controller.PeliculaSerieController [http-nio-8080-exec-3] Ocurrio una validacion personalizada, en el metodo crear(): La pelicula/serie ya existe.
-2023-02-20 12:02:36,336 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
-2023-02-20 12:02:36,357 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
-2023-02-20 12:02:36,526 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.

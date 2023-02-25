@@ -21,13 +21,13 @@ import java.util.stream.Collectors;
 @Slf4j
 @ConditionalOnProperty(prefix = "app", name = "type-data", havingValue = "database")
 @Service
-public class PersonajeServiceImpl implements IPersonajeService {
+public class PersonajeServiceBDImpl implements IPersonajeService {
 
     private final IPersonajeMapper personajeMapper;
     private final IPersonajeRepository personajeRepository;
 
-    public PersonajeServiceImpl(IPersonajeMapper personajeMapper,
-                                IPersonajeRepository personajeRepository) {
+    public PersonajeServiceBDImpl(IPersonajeMapper personajeMapper,
+                                  IPersonajeRepository personajeRepository) {
         this.personajeMapper = personajeMapper;
         this.personajeRepository = personajeRepository;
     }

@@ -28,15 +28,15 @@ import java.util.stream.Collectors;
 @Slf4j
 @ConditionalOnProperty(prefix = "app", name = "type-data", havingValue = "database")
 @Service
-public class PeliculaSerieServiceImpl implements IPeliculaSerieService {
+public class PeliculaSerieServiceBDImpl implements IPeliculaSerieService {
 
     private final IGeneroService generoService;
     private final IPeliculaSerieMapper peliculaSerieMapper;
     private final IPeliculaSerieRepository peliculaSerieRepository;
 
-    public PeliculaSerieServiceImpl(IGeneroService generoService,
-                                    IPeliculaSerieMapper peliculaSerieMapper,
-                                    IPeliculaSerieRepository peliculaSerieRepository) {
+    public PeliculaSerieServiceBDImpl(IGeneroService generoService,
+                                      IPeliculaSerieMapper peliculaSerieMapper,
+                                      IPeliculaSerieRepository peliculaSerieRepository) {
         this.generoService = generoService;
         this.peliculaSerieMapper = peliculaSerieMapper;
         this.peliculaSerieRepository = peliculaSerieRepository;

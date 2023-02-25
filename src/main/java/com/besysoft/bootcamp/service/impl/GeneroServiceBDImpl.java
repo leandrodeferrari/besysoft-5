@@ -22,13 +22,13 @@ import java.util.stream.Collectors;
 @Slf4j
 @ConditionalOnProperty(prefix = "app", name = "type-data", havingValue = "database")
 @Service
-public class GeneroServiceImpl implements IGeneroService {
+public class GeneroServiceBDImpl implements IGeneroService {
 
     private final IGeneroMapper generoMapper;
     private final IGeneroRepository generoRepository;
 
-    public GeneroServiceImpl(IGeneroMapper generoMapper,
-                             IGeneroRepository generoRepository) {
+    public GeneroServiceBDImpl(IGeneroMapper generoMapper,
+                               IGeneroRepository generoRepository) {
         this.generoMapper = generoMapper;
         this.generoRepository = generoRepository;
     }

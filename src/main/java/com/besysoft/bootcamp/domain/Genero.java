@@ -16,7 +16,7 @@ public class Genero implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", nullable = false)
+    @Column(name = "ID")
     private Long id;
 
     @Column(length = 30, name = "NOMBRE", nullable = false, unique = true)
