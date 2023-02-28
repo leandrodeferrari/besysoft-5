@@ -17,6 +17,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Entity
 @Table(name = "peliculas_series")
 public class PeliculaSerie implements Serializable {
@@ -55,6 +56,14 @@ public class PeliculaSerie implements Serializable {
         this.fechaDeCreacion = fechaDeCreacion;
         this.calificacion = calificacion;
         this.genero = genero;
+    }
+
+    public PeliculaSerie(String titulo, LocalDate fechaDeCreacion, Byte calificacion, Genero genero, List<Personaje> personajes) {
+        this.titulo = titulo;
+        this.fechaDeCreacion = fechaDeCreacion;
+        this.calificacion = calificacion;
+        this.genero = genero;
+        this.personajes = personajes;
     }
 
 }

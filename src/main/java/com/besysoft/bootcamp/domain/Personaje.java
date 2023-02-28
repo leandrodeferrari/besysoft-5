@@ -14,6 +14,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Entity
 @Table(name = "personajes")
 public class Personaje implements Serializable {
@@ -45,6 +46,14 @@ public class Personaje implements Serializable {
         this.edad = edad;
         this.peso = peso;
         this.historia = historia;
+    }
+
+    public Personaje(String nombre, Byte edad, Double peso, String historia, List<PeliculaSerie> peliculasSeries) {
+        this.nombre = nombre;
+        this.edad = edad;
+        this.peso = peso;
+        this.historia = historia;
+        this.peliculasSeries = peliculasSeries;
     }
 
 }

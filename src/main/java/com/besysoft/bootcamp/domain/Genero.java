@@ -10,6 +10,7 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Entity
 @Table(name = "generos")
 public class Genero implements Serializable {
@@ -21,5 +22,9 @@ public class Genero implements Serializable {
 
     @Column(length = 30, name = "NOMBRE", nullable = false, unique = true)
     private String nombre;
+
+    public Genero(String nombre) {
+        this.nombre = nombre;
+    }
 
 }
