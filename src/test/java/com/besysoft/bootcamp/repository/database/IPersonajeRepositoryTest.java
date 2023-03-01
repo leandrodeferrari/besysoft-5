@@ -2,9 +2,10 @@ package com.besysoft.bootcamp.repository.database;
 
 import com.besysoft.bootcamp.domain.Personaje;
 
+import com.besysoft.bootcamp.util.PersonajeTestUtil;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,10 @@ class IPersonajeRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        this.personajeRepository.save(new Personaje("Jacqueline", (byte) 26, 55.7D, "Es una actriz canadiense. Protagonizó la serie Salvation de CBS.", null));
-        this.personajeRepository.save(new Personaje("Vera", (byte) 86, 70.0D, "Supermodelo que enamoró a Coco Chanel y ahora ha conquistado a Paco Plaza.", null));
-        this.personajeRepository.save(new Personaje("Christian", (byte) 26, 79.5D, "Es actor, escritor, director, productor y músico. Trabaja en el teatro, peliculas y televisión.", null));
-        this.personajeRepository.save(new Personaje("Vera", (byte) 48, 90.2D, "Es actor, director y guionista australiano conocido por haber participado en la serie televisiva Teh secret life of us.", null));
+        this.personajeRepository.save(PersonajeTestUtil.personaje1);
+        this.personajeRepository.save(PersonajeTestUtil.personaje2);
+        this.personajeRepository.save(PersonajeTestUtil.personaje3);
+        this.personajeRepository.save(PersonajeTestUtil.personaje4);
     }
 
     @AfterEach
@@ -48,117 +49,117 @@ class IPersonajeRepositoryTest {
     }
 
     @Test
-    @Disabled
     void save() {
         //GIVEN
-        Personaje personaje = new Personaje
-                ("Leandro", (byte) 30, 80.0D, "Actor y guionista.", null);
+        Personaje esperado = PersonajeTestUtil.personaje5;
 
         // WHEN
-        Personaje personajeCreado = this.personajeRepository.save(personaje);
+        Personaje actual = this.personajeRepository.save(esperado);
 
         //THEN
-        assertEquals(personaje, personajeCreado);
+        assertEquals(esperado.getNombre(), actual.getNombre());
+        assertEquals(esperado.getEdad(), actual.getEdad());
+        assertEquals(esperado.getPeso(), actual.getPeso());
+        assertEquals(esperado.getHistoria(), actual.getHistoria());
     }
 
     @Test
     void update() {
         //GIVEN
-        Personaje personaje = this.personajeRepository.save(new Personaje
-                ("Leandro", (byte) 30, 80.0D, "Actor y guionista.", null));
+        Personaje personaje = this.personajeRepository.save(PersonajeTestUtil.personaje5);
         Long id = personaje.getId();
-        Personaje personajeDeEntrada = new Personaje
-                (id, "Roberto", (byte) 50, 67.9D, "Actor, musico y director.", null);
+        Personaje esperado = PersonajeTestUtil.personaje6;
+        esperado.setId(id);
 
         // WHEN
-        Personaje personajeActualizado = this.personajeRepository.save(personajeDeEntrada);
+        Personaje actual = this.personajeRepository.save(esperado);
 
         //THEN
-        assertEquals(id, personajeActualizado.getId());
-        assertEquals(personajeDeEntrada.getNombre(), personajeActualizado.getNombre());
-        assertEquals(personajeDeEntrada.getEdad(), personajeActualizado.getEdad());
-        assertEquals(personajeDeEntrada.getPeso(), personajeActualizado.getPeso());
-        assertEquals(personajeDeEntrada.getHistoria(), personajeActualizado.getHistoria());
+        assertEquals(esperado.getId(), actual.getId());
+        assertEquals(esperado.getNombre(), actual.getNombre());
+        assertEquals(esperado.getEdad(), actual.getEdad());
+        assertEquals(esperado.getPeso(), actual.getPeso());
+        assertEquals(esperado.getHistoria(), actual.getHistoria());
     }
 
     @Test
     void existsById() {
         //GIVEN
-        List<Personaje> personajes = this.personajeRepository.findAll();
-        Long id = personajes.get(0).getId();
+        Personaje esperado = this.personajeRepository.save(PersonajeTestUtil.personaje5);
+        Long id = esperado.getId();
 
         // WHEN
-        boolean existePersonajePorId = this.personajeRepository.existsById(id);
+        boolean existePorId = this.personajeRepository.existsById(id);
 
         //THEN
-        assertTrue(existePersonajePorId);
+        assertTrue(existePorId);
     }
 
     @Test
     void findAllByNombre() {
         //GIVEN
-        String nombre = "Vera";
-        List<Personaje> personajes = this.personajeRepository.findAll()
+        String nombre = PersonajeTestUtil.NOMBRE2;
+        List<Personaje> esperado = this.personajeRepository.findAll()
                 .stream()
                 .filter(p -> p.getNombre().equalsIgnoreCase(nombre))
                 .collect(Collectors.toList());
 
         // WHEN
-        List<Personaje> personajesPorNombre = this.personajeRepository.findAllByNombre(nombre);
+        List<Personaje> actual = this.personajeRepository.findAllByNombre(nombre);
 
         //THEN
-        assertEquals(personajes, personajesPorNombre);
+        assertEquals(esperado, actual);
     }
 
     @Test
     void findAllByEdad() {
         //GIVEN
-        Byte edad = (byte) 26;
-        List<Personaje> personajes = this.personajeRepository.findAll()
+        Byte edad = PersonajeTestUtil.EDAD;
+        List<Personaje> esperado = this.personajeRepository.findAll()
                 .stream()
                 .filter(p -> p.getEdad().equals(edad))
                 .collect(Collectors.toList());
 
         // WHEN
-        List<Personaje> personajesPorEdad = this.personajeRepository.findAllByEdad(edad);
+        List<Personaje> actual = this.personajeRepository.findAllByEdad(edad);
 
         //THEN
-        assertEquals(personajes, personajesPorEdad);
+        assertEquals(esperado, actual);
     }
 
     @Test
     void findAllByNombreAndEdad() {
         //GIVEN
-        String nombre = "Jacqueline";
-        Byte edad = (byte) 26;
-        List<Personaje> personajes = this.personajeRepository.findAll()
+        String nombre = PersonajeTestUtil.NOMBRE1;
+        Byte edad = PersonajeTestUtil.EDAD;
+        List<Personaje> esperado = this.personajeRepository.findAll()
                 .stream()
                 .filter(p -> p.getEdad().equals(edad) && p.getNombre().equalsIgnoreCase(nombre))
                 .collect(Collectors.toList());
 
         // WHEN
-        List<Personaje> personajesPorNombreYEdad = this.personajeRepository
+        List<Personaje> actual = this.personajeRepository
                 .findAllByNombreAndEdad(nombre, edad);
 
         //THEN
-        assertEquals(personajes, personajesPorNombreYEdad);
+        assertEquals(esperado, actual);
     }
 
     @Test
     void findAllByEdadBetween() {
         //GIVEN
-        Byte desde = (byte) 40;
-        Byte hasta = (byte) 90;
-        List<Personaje> personajes = this.personajeRepository.findAll()
+        Byte desde = PersonajeTestUtil.DESDE;
+        Byte hasta = PersonajeTestUtil.HASTA;
+        List<Personaje> esperado = this.personajeRepository.findAll()
                 .stream()
                 .filter(p -> p.getEdad() >= desde && p.getEdad() <= hasta)
                 .collect(Collectors.toList());
 
         // WHEN
-        List<Personaje> personajesDesdeHasta = this.personajeRepository.findAllByEdadBetween(desde, hasta);
+        List<Personaje> actual = this.personajeRepository.findAllByEdadBetween(desde, hasta);
 
         //THEN
-        assertEquals(personajes, personajesDesdeHasta);
+        assertEquals(esperado, actual);
     }
 
 }
