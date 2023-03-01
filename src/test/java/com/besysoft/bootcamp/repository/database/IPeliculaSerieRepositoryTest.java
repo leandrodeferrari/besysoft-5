@@ -2,10 +2,11 @@ package com.besysoft.bootcamp.repository.database;
 
 import com.besysoft.bootcamp.domain.Genero;
 import com.besysoft.bootcamp.domain.PeliculaSerie;
+import com.besysoft.bootcamp.util.GeneroTestUtil;
+import com.besysoft.bootcamp.util.PeliculaSerieTestUtil;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,10 @@ class IPeliculaSerieRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        Genero genero1 = this.generoRepository.save(new Genero("Terror"));
-        Genero genero2 = this.generoRepository.save(new Genero("Suspenso"));
-        Genero genero3 = this.generoRepository.save(new Genero("Romance"));
-        Genero genero4 = this.generoRepository.save(new Genero("Policial"));
+        Genero genero1 = generoRepository.save(GeneroTestUtil.genero1);
+        Genero genero2 = generoRepository.save(GeneroTestUtil.genero2);
+        Genero genero3 = generoRepository.save(GeneroTestUtil.genero3);
+        Genero genero4 = generoRepository.save(GeneroTestUtil.genero4);
 
         this.peliculaSerieRepository.save(new PeliculaSerie("Chucky", LocalDate.parse("2004-10-10"), (byte) 5, genero1,null));
         this.peliculaSerieRepository.save(new PeliculaSerie("Annabelle", LocalDate.parse("2006-01-10"), (byte) 2, genero1,null));
@@ -60,77 +61,85 @@ class IPeliculaSerieRepositoryTest {
     }
 
     @Test
-    @Disabled
     void save() {
         //GIVEN
-        Genero genero = this.generoRepository.save(new Genero("Accion"));
-        PeliculaSerie peliculaSerie = new PeliculaSerie
-                ("Tiburon", LocalDate.parse("2023-01-01"), (byte) 4, genero, null);
+        Genero genero = this.generoRepository.save(GeneroTestUtil.genero6);
+        PeliculaSerie esperado = PeliculaSerieTestUtil.peliculaSerie5;
+        esperado.setGenero(genero);
 
         //WHEN
-        PeliculaSerie peliculaSerieCreada = this.peliculaSerieRepository.save(peliculaSerie);
+        PeliculaSerie actual = this.peliculaSerieRepository.save(esperado);
 
         //THEN
-        assertEquals(peliculaSerie, peliculaSerieCreada);
+        assertEquals(esperado.getTitulo(), actual.getTitulo());
+        assertEquals(esperado.getFechaDeCreacion(), actual.getFechaDeCreacion());
+        assertEquals(esperado.getCalificacion(), actual.getCalificacion());
+        assertEquals(esperado.getGenero(), actual.getGenero());
     }
 
     @Test
     void update() {
         //GIVEN
-        Genero genero = this.generoRepository.save(new Genero("Accion"));
-        PeliculaSerie peliculaSerie = this.peliculaSerieRepository.save(new PeliculaSerie
-                ("Tiburon", LocalDate.parse("2023-01-01"), (byte) 4, genero, null));
+        Genero genero = this.generoRepository.save(GeneroTestUtil.genero6);
+        PeliculaSerie peliculaSerie = this.peliculaSerieRepository.save(
+                new PeliculaSerie
+                        ("Tiburon", LocalDate.parse("2023-01-01"), (byte) 4, genero, null)
+        );
         Long id = peliculaSerie.getId();
-        PeliculaSerie peliculaSerieDeEntrada = new PeliculaSerie
-                (id, "Jumanji", LocalDate.parse("2021-11-08"), (byte) 5, genero, null);
+        PeliculaSerie esperado = PeliculaSerieTestUtil.peliculaSerie6;
+        esperado.setGenero(genero);
+        esperado.setId(id);
 
         //WHEN
-        PeliculaSerie peliculaSerieActualizada = this.peliculaSerieRepository.save(peliculaSerieDeEntrada);
+        PeliculaSerie actual = this.peliculaSerieRepository.save(esperado);
 
         //THEN
-        assertEquals(id, peliculaSerieActualizada.getId());
-        assertEquals(peliculaSerieDeEntrada.getTitulo(), peliculaSerieActualizada.getTitulo());
-        assertEquals(peliculaSerieDeEntrada.getFechaDeCreacion(), peliculaSerieActualizada.getFechaDeCreacion());
-        assertEquals(peliculaSerieDeEntrada.getCalificacion(), peliculaSerieActualizada.getCalificacion());
-        assertEquals(peliculaSerieDeEntrada.getGenero(), peliculaSerieActualizada.getGenero());
+        assertEquals(esperado.getId(), actual.getId());
+        assertEquals(esperado.getTitulo(), actual.getTitulo());
+        assertEquals(esperado.getFechaDeCreacion(), actual.getFechaDeCreacion());
+        assertEquals(esperado.getCalificacion(), actual.getCalificacion());
+        assertEquals(esperado.getGenero(), actual.getGenero());
     }
 
     @Test
     void existsById() {
         //GIVEN
-        List<PeliculaSerie> peliculasSeries = this.peliculaSerieRepository.findAll();
-        Long id = peliculasSeries.get(0).getId();
+        Genero genero = this.generoRepository.save(GeneroTestUtil.genero6);
+        PeliculaSerie peliculaSerie = PeliculaSerieTestUtil.peliculaSerie6;
+        peliculaSerie.setGenero(genero);
+        PeliculaSerie esperado = this.peliculaSerieRepository.save(peliculaSerie);
+        Long id = esperado.getId();
 
         //WHEN
-        boolean existePeliculaSeriePorId = this.peliculaSerieRepository.existsById(id);
+        boolean existePorId = this.peliculaSerieRepository.existsById(id);
 
         //THEN
-        assertTrue(existePeliculaSeriePorId);
+        assertTrue(existePorId);
     }
 
     @Test
     void findAllByGenero() {
         //GIVEN
-        String nombreGenero = "Terror";
+        String nombreGenero = GeneroTestUtil.genero1.getNombre();
         Genero genero = this.generoRepository.findByNombre(nombreGenero).orElseThrow();
-        List<PeliculaSerie> peliculasSeries = this.peliculaSerieRepository.findAll()
+        List<PeliculaSerie> esperado = this.peliculaSerieRepository.findAll()
                 .stream()
                 .filter(p -> p.getGenero().equals(genero))
                 .collect(Collectors.toList());
 
         //WHEN
-        List<PeliculaSerie> peliculasSeriesPorNombreGenero = this.peliculaSerieRepository
+        List<PeliculaSerie> actual = this.peliculaSerieRepository
                 .findAllByGenero(genero);
 
         //THEN
-        assertEquals(peliculasSeries, peliculasSeriesPorNombreGenero);
+        assertEquals(esperado, actual);
     }
 
     @Test
     void findByTitulo() {
         //GIVEN
-        String titulo = "Jaula";
-        PeliculaSerie peliculaSerie = this.peliculaSerieRepository
+        String titulo = PeliculaSerieTestUtil.peliculaSerie3.getTitulo();
+        PeliculaSerie esperado = this.peliculaSerieRepository
                 .findAll()
                 .stream()
                 .filter(p -> p.getTitulo().equalsIgnoreCase(titulo))
@@ -138,86 +147,91 @@ class IPeliculaSerieRepositoryTest {
                 .orElseThrow();
 
         //WHEN
-        Optional<PeliculaSerie> optionalPeliculaSerie = this.peliculaSerieRepository.findByTitulo(titulo);
+        Optional<PeliculaSerie> actual = this.peliculaSerieRepository.findByTitulo(titulo);
 
         //THEN
-        assertTrue(optionalPeliculaSerie.isPresent());
-        assertEquals(peliculaSerie.getId(), optionalPeliculaSerie.get().getId());
-        assertEquals(peliculaSerie.getTitulo(), optionalPeliculaSerie.get().getTitulo());
-        assertEquals(peliculaSerie.getCalificacion(), optionalPeliculaSerie.get().getCalificacion());
-        assertEquals(peliculaSerie.getGenero(), optionalPeliculaSerie.get().getGenero());
-        assertEquals(peliculaSerie.getFechaDeCreacion(), optionalPeliculaSerie.get().getFechaDeCreacion());
+        assertTrue(actual.isPresent());
+        assertEquals(esperado.getId(), actual.get().getId());
+        assertEquals(esperado.getTitulo(), actual.get().getTitulo());
+        assertEquals(esperado.getCalificacion(), actual.get().getCalificacion());
+        assertEquals(esperado.getGenero(), actual.get().getGenero());
+        assertEquals(esperado.getFechaDeCreacion(), actual.get().getFechaDeCreacion());
     }
 
     @Test
     void findAllByTituloAndGenero() {
         //GIVEN
-        String titulo = "Jaula";
-        Genero genero = this.generoRepository.findByNombre("Suspenso").orElseThrow();
-        List<PeliculaSerie> peliculasSeries = this.peliculaSerieRepository
+        String titulo = PeliculaSerieTestUtil.peliculaSerie3.getTitulo();;
+        String nombreGenero = GeneroTestUtil.genero2.getNombre();
+        Genero genero = this.generoRepository.findByNombre(nombreGenero).orElseThrow();
+        List<PeliculaSerie> esperado = this.peliculaSerieRepository
                 .findAll()
                 .stream().filter(p -> p.getTitulo().equalsIgnoreCase(titulo) && p.getGenero().equals(genero))
                 .collect(Collectors.toList());
 
         //WHEN
-        List<PeliculaSerie> peliculasSeriesPorNombreYGenero = this.peliculaSerieRepository
+        List<PeliculaSerie> actual = this.peliculaSerieRepository
                 .findAllByTituloAndGenero(titulo, genero);
 
         //THEN
-        assertFalse(peliculasSeriesPorNombreYGenero.isEmpty());
-        assertEquals(peliculasSeries, peliculasSeriesPorNombreYGenero);
+        assertFalse(actual.isEmpty());
+        assertEquals(esperado, actual);
     }
 
     @Test
     void findAllByFechaDeCreacionBetween() {
         //GIVEN
-        LocalDate desde = LocalDate.parse("2020-01-01");
-        LocalDate hasta = LocalDate.parse("2023-01-01");
-        List<PeliculaSerie> peliculasSeries = this.peliculaSerieRepository
+        LocalDate desde = PeliculaSerieTestUtil.DESDE_LOCAL_DATE;
+        LocalDate hasta = PeliculaSerieTestUtil.HASTA_LOCAL_DATE;
+        List<PeliculaSerie> esperado = this.peliculaSerieRepository
                 .findAll()
                 .stream()
                 .filter(ps -> ps.getFechaDeCreacion().isAfter(desde.minusDays(1)) && ps.getFechaDeCreacion().isBefore(hasta.plusDays(1)))
                 .collect(Collectors.toList());
 
         //WHEN
-        List<PeliculaSerie> peliculasSeriesRangoFechas = this.peliculaSerieRepository
+        List<PeliculaSerie> actual = this.peliculaSerieRepository
                 .findAllByFechaDeCreacionBetween(desde, hasta);
 
         //THEN
-        assertFalse(peliculasSeriesRangoFechas.isEmpty());
-        assertEquals(peliculasSeries, peliculasSeriesRangoFechas);
+        assertFalse(actual.isEmpty());
+        assertEquals(esperado, actual);
     }
 
     @Test
     void findAllByCalificacionBetween() {
         //GIVEN
-        Byte desde = (byte) 1;
-        Byte hasta = (byte) 3;
-        List<PeliculaSerie> peliculasSeries = this.peliculaSerieRepository
+        Byte desde = PeliculaSerieTestUtil.DESDE_BYTE;
+        Byte hasta = PeliculaSerieTestUtil.HASTA_BYTE;
+        List<PeliculaSerie> esperado = this.peliculaSerieRepository
                 .findAll()
                 .stream()
                 .filter(ps -> ps.getCalificacion() >= desde && ps.getCalificacion() <= hasta)
                 .collect(Collectors.toList());
 
         //WHEN
-        List<PeliculaSerie> peliculasSeriesRangoCalificacion = this.peliculaSerieRepository
+        List<PeliculaSerie> actual = this.peliculaSerieRepository
                 .findAllByCalificacionBetween(desde, hasta);
 
         //THEN
-        assertFalse(peliculasSeriesRangoCalificacion.isEmpty());
-        assertEquals(peliculasSeries, peliculasSeriesRangoCalificacion);
+        assertFalse(actual.isEmpty());
+        assertEquals(esperado, actual);
     }
 
     @Test
     void existsByTitulo() {
         //GIVEN
-        String titulo = "Chucky";
+        Genero genero = this.generoRepository.save(GeneroTestUtil.genero6);
+        PeliculaSerie peliculaSerie = PeliculaSerieTestUtil.peliculaSerie6;
+        peliculaSerie.setGenero(genero);
+        PeliculaSerie esperado = this.peliculaSerieRepository.save(peliculaSerie);
+        String titulo = esperado.getTitulo();
 
         //WHEN
-        boolean existePeliculaSeriePorTitulo = this.peliculaSerieRepository.existsByTitulo(titulo);
+        boolean existePorTitulo = this.peliculaSerieRepository.existsByTitulo(titulo);
 
         //THEN
-        assertTrue(existePeliculaSeriePorTitulo);
+        assertTrue(existePorTitulo);
     }
 
 }
