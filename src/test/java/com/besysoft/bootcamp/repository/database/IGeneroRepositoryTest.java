@@ -2,9 +2,10 @@ package com.besysoft.bootcamp.repository.database;
 
 import com.besysoft.bootcamp.domain.Genero;
 
+import com.besysoft.bootcamp.util.GeneroTestUtil;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,10 @@ class IGeneroRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        generoRepository.save(new Genero("Terror"));
-        generoRepository.save(new Genero("Suspenso"));
-        generoRepository.save(new Genero("Romance"));
-        generoRepository.save(new Genero("Policial"));
+        generoRepository.save(GeneroTestUtil.genero1);
+        generoRepository.save(GeneroTestUtil.genero2);
+        generoRepository.save(GeneroTestUtil.genero3);
+        generoRepository.save(GeneroTestUtil.genero4);
     }
 
     @AfterEach
@@ -48,85 +49,87 @@ class IGeneroRepositoryTest {
     }
 
     @Test
-    @Disabled
     void save() {
         //GIVEN
-        Genero genero = new Genero("Comedia");
+        Genero esperado = GeneroTestUtil.genero5;
 
         //WHEN
-        Genero generoCreado = this.generoRepository.save(genero);
+        Genero actual = this.generoRepository.save(esperado);
 
         //THEN
-        assertEquals(genero, generoCreado);
+        assertEquals(esperado.getNombre(), actual.getNombre());
     }
 
     @Test
     void update() {
         //GIVEN
-        Genero genero = this.generoRepository.save(new Genero("Comedia"));
+        Genero genero = this.generoRepository.save(GeneroTestUtil.genero5);
         Long id = genero.getId();
-        Genero generoDeEntrada = new Genero(id, "Ciencia ficcion");
+        Genero esperado = GeneroTestUtil.genero6;
+        esperado.setId(id);
 
         //WHEN
-        Genero generoActualizado = this.generoRepository.save(generoDeEntrada);
+        Genero actual = this.generoRepository.save(esperado);
 
         //THEN
-        assertEquals(id, generoActualizado.getId());
-        assertEquals(generoDeEntrada.getNombre(), generoActualizado.getNombre());
+        assertEquals(esperado.getId(), actual.getId());
+        assertEquals(esperado.getNombre(), actual.getNombre());
     }
 
     @Test
     void findById() {
         //GIVEN
-        List<Genero> generos = this.generoRepository.findAll();
-        Genero genero = generos.get(0);
-        Long id = genero.getId();
+        Genero esperado = this.generoRepository.save(GeneroTestUtil.genero5);
+        Long id = esperado.getId();
 
         //WHEN
-        Optional<Genero> generoEncontrado = this.generoRepository.findById(id);
+        Optional<Genero> actual = this.generoRepository.findById(id);
 
         //THEN
-        assertTrue(generoEncontrado.isPresent());
-        assertEquals(genero.getId(), generoEncontrado.get().getId());
-        assertEquals(genero.getNombre(), generoEncontrado.get().getNombre());
+        assertTrue(actual.isPresent());
+        assertEquals(esperado.getId(), actual.get().getId());
+        assertEquals(esperado.getNombre(), actual.get().getNombre());
     }
 
     @Test
     void existsById() {
         //GIVEN
-        List<Genero> generos = this.generoRepository.findAll();
-        Long id = generos.get(0).getId();
+        Genero esperado = this.generoRepository.save(GeneroTestUtil.genero5);
+        Long id = esperado.getId();
 
         //WHEN
-        boolean existeGeneroPorId = this.generoRepository.existsById(id);
+        boolean existePorId = this.generoRepository.existsById(id);
 
         //THEN
-        assertTrue(existeGeneroPorId);
+        assertTrue(existePorId);
     }
 
     @Test
     void findByNombre() {
         //GIVEN
-        String nombre = "Terror";
+        Genero esperado = this.generoRepository.save(GeneroTestUtil.genero5);
+        String nombre = esperado.getNombre();
 
         //WHEN
-        Optional<Genero> optionalGenero = this.generoRepository.findByNombre(nombre);
+        Optional<Genero> actual = this.generoRepository.findByNombre(nombre);
 
         //THEN
-        assertTrue(optionalGenero.isPresent());
-        assertEquals(nombre, optionalGenero.get().getNombre());
+        assertTrue(actual.isPresent());
+        assertEquals(esperado.getId(), actual.get().getId());
+        assertEquals(esperado.getNombre(), actual.get().getNombre());
     }
 
     @Test
     void existsByNombre() {
         //GIVEN
-        String nombre = "Terror";
+        Genero genero = this.generoRepository.save(GeneroTestUtil.genero5);
+        String nombre = genero.getNombre();
 
         //WHEN
-        boolean existsNombre = this.generoRepository.existsByNombre(nombre);
+        boolean existePorNombre = this.generoRepository.existsByNombre(nombre);
 
         //THEN
-        assertTrue(existsNombre);
+        assertTrue(existePorNombre);
     }
 
 }
