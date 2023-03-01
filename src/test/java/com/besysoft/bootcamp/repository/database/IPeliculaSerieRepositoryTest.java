@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.time.LocalDate;
+
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -127,49 +129,83 @@ class IPeliculaSerieRepositoryTest {
     @Test
     void findByTitulo() {
         //GIVEN
-
+        String titulo = "Jaula";
+        PeliculaSerie peliculaSerie = this.peliculaSerieRepository
+                .findAll()
+                .stream()
+                .filter(p -> p.getTitulo().equalsIgnoreCase(titulo))
+                .findFirst()
+                .orElseThrow();
 
         //WHEN
-
+        Optional<PeliculaSerie> optionalPeliculaSerie = this.peliculaSerieRepository.findByTitulo(titulo);
 
         //THEN
-
+        assertTrue(optionalPeliculaSerie.isPresent());
+        assertEquals(peliculaSerie.getId(), optionalPeliculaSerie.get().getId());
+        assertEquals(peliculaSerie.getTitulo(), optionalPeliculaSerie.get().getTitulo());
+        assertEquals(peliculaSerie.getCalificacion(), optionalPeliculaSerie.get().getCalificacion());
+        assertEquals(peliculaSerie.getGenero(), optionalPeliculaSerie.get().getGenero());
+        assertEquals(peliculaSerie.getFechaDeCreacion(), optionalPeliculaSerie.get().getFechaDeCreacion());
     }
 
     @Test
     void findAllByTituloAndGenero() {
         //GIVEN
-
+        String titulo = "Jaula";
+        Genero genero = this.generoRepository.findByNombre("Suspenso").orElseThrow();
+        List<PeliculaSerie> peliculasSeries = this.peliculaSerieRepository
+                .findAll()
+                .stream().filter(p -> p.getTitulo().equalsIgnoreCase(titulo) && p.getGenero().equals(genero))
+                .collect(Collectors.toList());
 
         //WHEN
-
+        List<PeliculaSerie> peliculasSeriesPorNombreYGenero = this.peliculaSerieRepository
+                .findAllByTituloAndGenero(titulo, genero);
 
         //THEN
-
+        assertFalse(peliculasSeriesPorNombreYGenero.isEmpty());
+        assertEquals(peliculasSeries, peliculasSeriesPorNombreYGenero);
     }
 
     @Test
     void findAllByFechaDeCreacionBetween() {
         //GIVEN
-
+        LocalDate desde = LocalDate.parse("2020-01-01");
+        LocalDate hasta = LocalDate.parse("2023-01-01");
+        List<PeliculaSerie> peliculasSeries = this.peliculaSerieRepository
+                .findAll()
+                .stream()
+                .filter(ps -> ps.getFechaDeCreacion().isAfter(desde.minusDays(1)) && ps.getFechaDeCreacion().isBefore(hasta.plusDays(1)))
+                .collect(Collectors.toList());
 
         //WHEN
-
+        List<PeliculaSerie> peliculasSeriesRangoFechas = this.peliculaSerieRepository
+                .findAllByFechaDeCreacionBetween(desde, hasta);
 
         //THEN
-
+        assertFalse(peliculasSeriesRangoFechas.isEmpty());
+        assertEquals(peliculasSeries, peliculasSeriesRangoFechas);
     }
 
     @Test
     void findAllByCalificacionBetween() {
         //GIVEN
-
+        Byte desde = (byte) 1;
+        Byte hasta = (byte) 3;
+        List<PeliculaSerie> peliculasSeries = this.peliculaSerieRepository
+                .findAll()
+                .stream()
+                .filter(ps -> ps.getCalificacion() >= desde && ps.getCalificacion() <= hasta)
+                .collect(Collectors.toList());
 
         //WHEN
-
+        List<PeliculaSerie> peliculasSeriesRangoCalificacion = this.peliculaSerieRepository
+                .findAllByCalificacionBetween(desde, hasta);
 
         //THEN
-
+        assertFalse(peliculasSeriesRangoCalificacion.isEmpty());
+        assertEquals(peliculasSeries, peliculasSeriesRangoCalificacion);
     }
 
     @Test
