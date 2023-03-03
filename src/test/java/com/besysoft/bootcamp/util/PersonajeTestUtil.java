@@ -2,6 +2,9 @@ package com.besysoft.bootcamp.util;
 
 import com.besysoft.bootcamp.domain.Personaje;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class PersonajeTestUtil {
 
     public static final String NOMBRE1 = "Jacqueline";
@@ -24,5 +27,12 @@ public class PersonajeTestUtil {
 
     public static final Byte DESDE = (byte) 40;
     public static final Byte HASTA = (byte) 90;
+
+    public static final List<Personaje> PERSONAJES = Arrays.asList(
+            new Personaje(1L, NOMBRE1, EDAD, 55.7D, "Es una actriz canadiense. Protagonizó la serie Salvation de CBS.", null),
+            new Personaje(2L, NOMBRE2, (byte) 86, 70.0D, "Supermodelo que enamoró a Coco Chanel y ahora ha conquistado a Paco Plaza.", null)
+    );
+
+    public static final int PERSONAJES_SIZE = PERSONAJES.size();
 
 }

@@ -17,14 +17,38 @@ class GeneroControllerTest {
 
     @Test
     void obtenerTodos() {
+        //GIVEN
+
+
+        //WHEN
+
+
+        //THEN
+
     }
 
     @Test
     void crear() {
+        //GIVEN
+
+
+        //WHEN
+
+
+        //THEN
+
     }
 
     @Test
     void actualizar() {
+        //GIVEN
+
+
+        //WHEN
+
+
+        //THEN
+
     }
 
 }
