@@ -2,9 +2,12 @@ package com.besysoft.bootcamp.util;
 
 import com.besysoft.bootcamp.domain.Genero;
 import com.besysoft.bootcamp.domain.PeliculaSerie;
+import com.besysoft.bootcamp.dto.request.PeliculaSerieInDto;
+import com.besysoft.bootcamp.dto.response.PeliculaSerieOutDto;
 
 import java.time.LocalDate;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,5 +37,43 @@ public class PeliculaSerieTestUtil {
 
     /*La cantidad de peliculas_series en PELICULAS_SERIES_CON_ID debe ser la misma que los inserts de peliculas_series, en import.sql*/
     public static final int PELICULAS_SERIES_SIZE = PELICULAS_SERIES_CON_ID.size();
+
+    public static List<PeliculaSerieOutDto> generarPeliculasSeriesOutDtos(){
+        PeliculaSerieOutDto peliculaSerieOutDto1 = new PeliculaSerieOutDto();
+        peliculaSerieOutDto1.setTitulo("Tiburon");
+        peliculaSerieOutDto1.setCalificacion((byte) 3);
+        peliculaSerieOutDto1.setNombreGenero("Terror");
+        peliculaSerieOutDto1.setFechaDeCreacion(LocalDate.parse("2020-10-10")
+                .format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+
+        PeliculaSerieOutDto peliculaSerieOutDto2 = new PeliculaSerieOutDto();
+        peliculaSerieOutDto2.setTitulo("Godzilla");
+        peliculaSerieOutDto2.setCalificacion((byte) 5);
+        peliculaSerieOutDto2.setNombreGenero("Suspenso");
+        peliculaSerieOutDto2.setFechaDeCreacion(LocalDate.parse("2022-01-01")
+                .format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+
+        return Arrays.asList(
+                peliculaSerieOutDto1,
+                peliculaSerieOutDto2
+        );
+
+    }
+
+    public static final PeliculaSerieOutDto PELICULA_SERIE_OUT_DTO = generarPeliculasSeriesOutDtos().get(0);
+
+    public static PeliculaSerieInDto generarPeliculaSerieInDto(){
+        PeliculaSerieInDto dto = new PeliculaSerieInDto();
+        dto.setTitulo("Godzilla");
+        dto.setCalificacion((byte) 5);
+        dto.setGeneroId(1L);
+        dto.setFechaDeCreacion(LocalDate.parse("2022-01-01")
+                .format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+
+        return dto;
+
+    }
+
+    public static final PeliculaSerieInDto PELICULA_SERIE_IN_DTO = generarPeliculaSerieInDto();
 
 }
