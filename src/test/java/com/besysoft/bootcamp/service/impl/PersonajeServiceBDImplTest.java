@@ -34,14 +34,14 @@ class PersonajeServiceBDImplTest {
     @Test
     void buscarPorFiltros_findAll() {
         //GIVEN
-        List<PersonajeOutDto> esperado = PersonajeTestUtil.PERSONAJES
+        List<PersonajeOutDto> esperado = PersonajeTestUtil.PERSONAJES_CON_ID
                 .stream()
                 .map(this.personajeMapper::mapToDto)
                 .collect(Collectors.toList());
         String nombre = null;
         Byte edad = null;
 
-        when(this.personajeRepository.findAll()).thenReturn(PersonajeTestUtil.PERSONAJES);
+        when(this.personajeRepository.findAll()).thenReturn(PersonajeTestUtil.PERSONAJES_CON_ID);
 
         //WHEN
         List<PersonajeOutDto> actual = this.personajeServiceBD.buscarPorFiltros(nombre, edad);
@@ -56,15 +56,15 @@ class PersonajeServiceBDImplTest {
     @Test
     void buscarPorFiltros_findAllByNombreAndEdad() {
         //GIVEN
-        List<PersonajeOutDto> esperado = PersonajeTestUtil.PERSONAJES
+        List<PersonajeOutDto> esperado = PersonajeTestUtil.PERSONAJES_CON_ID
                 .stream()
                 .map(this.personajeMapper::mapToDto)
                 .collect(Collectors.toList());
-        String nombre = "Roberto"; //
-        Byte edad = (byte) 45; //
+        String nombre = PersonajeTestUtil.PERSONAJE1_CON_ID.getNombre();
+        Byte edad = PersonajeTestUtil.PERSONAJE1_CON_ID.getEdad();
 
         when(this.personajeRepository.findAllByNombreAndEdad(anyString(), anyByte()))
-                .thenReturn(PersonajeTestUtil.PERSONAJES);
+                .thenReturn(PersonajeTestUtil.PERSONAJES_CON_ID);
 
         //WHEN
         List<PersonajeOutDto> actual = this.personajeServiceBD.buscarPorFiltros(nombre, edad);
@@ -79,14 +79,14 @@ class PersonajeServiceBDImplTest {
     @Test
     void buscarPorFiltros_findAllByNombre() {
         //GIVEN
-        List<PersonajeOutDto> esperado = PersonajeTestUtil.PERSONAJES
+        List<PersonajeOutDto> esperado = PersonajeTestUtil.PERSONAJES_CON_ID
                 .stream()
                 .map(this.personajeMapper::mapToDto)
                 .collect(Collectors.toList());
-        String nombre = "Roberto"; //
+        String nombre = PersonajeTestUtil.PERSONAJE1_CON_ID.getNombre();
         Byte edad = null;
 
-        when(this.personajeRepository.findAllByNombre(anyString())).thenReturn(PersonajeTestUtil.PERSONAJES);
+        when(this.personajeRepository.findAllByNombre(anyString())).thenReturn(PersonajeTestUtil.PERSONAJES_CON_ID);
 
         //WHEN
         List<PersonajeOutDto> actual = this.personajeServiceBD.buscarPorFiltros(nombre, edad);
@@ -101,14 +101,15 @@ class PersonajeServiceBDImplTest {
     @Test
     void buscarPorFiltros_findAllByEdad() {
         //GIVEN
-        List<PersonajeOutDto> esperado = PersonajeTestUtil.PERSONAJES
+        List<PersonajeOutDto> esperado = PersonajeTestUtil.PERSONAJES_CON_ID
                 .stream()
                 .map(this.personajeMapper::mapToDto)
                 .collect(Collectors.toList());
         String nombre = null;
-        Byte edad = (byte) 45; //
+        Byte edad = PersonajeTestUtil.PERSONAJE1_CON_ID.getEdad();
 
-        when(this.personajeRepository.findAllByEdad(anyByte())).thenReturn(PersonajeTestUtil.PERSONAJES);
+        when(this.personajeRepository.findAllByEdad(anyByte()))
+                .thenReturn(PersonajeTestUtil.PERSONAJES_CON_ID);
 
         //WHEN
         List<PersonajeOutDto> actual = this.personajeServiceBD.buscarPorFiltros(nombre, edad);
@@ -123,15 +124,15 @@ class PersonajeServiceBDImplTest {
     @Test
     void buscarPorEdades() {
         //GIVEN
-        List<PersonajeOutDto> esperado = PersonajeTestUtil.PERSONAJES
+        List<PersonajeOutDto> esperado = PersonajeTestUtil.PERSONAJES_CON_ID
                 .stream()
                 .map(this.personajeMapper::mapToDto)
                 .collect(Collectors.toList());
-        Byte desde = (byte) 23; //
-        Byte hasta = (byte) 45; //
+        Byte desde = PersonajeTestUtil.DESDE;
+        Byte hasta = PersonajeTestUtil.HASTA;
 
         when(this.personajeRepository.findAllByEdadBetween(anyByte(), anyByte()))
-                .thenReturn(PersonajeTestUtil.PERSONAJES);
+                .thenReturn(PersonajeTestUtil.PERSONAJES_CON_ID);
 
         //WHEN
         List<PersonajeOutDto> actual = this.personajeServiceBD.buscarPorEdades(desde, hasta);
@@ -144,7 +145,7 @@ class PersonajeServiceBDImplTest {
     @Test
     void crear() {
         //GIVEN
-        Personaje personaje = PersonajeTestUtil.PERSONAJES.get(0); //
+        Personaje personaje = PersonajeTestUtil.PERSONAJE1_CON_ID;
         PersonajeOutDto esperado = this.personajeMapper.mapToDto(personaje);
 
         PersonajeInDto dto = new PersonajeInDto();
@@ -166,9 +167,9 @@ class PersonajeServiceBDImplTest {
     @Test
     void actualizar() {
         //GIVEN
-        Personaje personaje = PersonajeTestUtil.PERSONAJES.get(0); //
+        Personaje personaje = PersonajeTestUtil.PERSONAJE1_CON_ID;
         PersonajeOutDto esperado = this.personajeMapper.mapToDto(personaje);
-        Long id = 1L; //
+        Long id = personaje.getId();
 
         PersonajeInDto dto = new PersonajeInDto();
         dto.setNombre(personaje.getNombre());

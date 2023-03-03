@@ -19,7 +19,7 @@ public class GeneroTestUtil {
 
     public static final Genero GENERO1_CON_ID = GENEROS_CON_ID.get(0);
 
-    /*La cantidad de generos en GENEROS_CON_ID debe se la misma que los inserts de generos en import.sql*/
+    /*La cantidad de generos en GENEROS_CON_ID debe ser la misma que los inserts de generos, en import.sql*/
     public static final int GENEROS_SIZE = GENEROS_CON_ID.size();
 
 }

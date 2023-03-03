@@ -1,11 +1,8 @@
 package com.besysoft.bootcamp.repository.database;
 
 import com.besysoft.bootcamp.domain.Personaje;
-
 import com.besysoft.bootcamp.util.PersonajeTestUtil;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,19 +19,6 @@ class IPersonajeRepositoryTest {
     @Autowired
     IPersonajeRepository personajeRepository;
 
-    @BeforeEach
-    void setUp() {
-        this.personajeRepository.save(PersonajeTestUtil.personaje1);
-        this.personajeRepository.save(PersonajeTestUtil.personaje2);
-        this.personajeRepository.save(PersonajeTestUtil.personaje3);
-        this.personajeRepository.save(PersonajeTestUtil.personaje4);
-    }
-
-    @AfterEach
-    void tearDown() {
-        this.personajeRepository.deleteAll();
-    }
-
     @Test
     void findAll() {
         //GIVEN
@@ -45,13 +29,13 @@ class IPersonajeRepositoryTest {
 
         //THEN
         assertFalse(personajes.isEmpty());
-        assertEquals(4, personajes.size());
+        assertEquals(PersonajeTestUtil.PERSONAJES_SIZE, personajes.size());
     }
 
     @Test
     void save() {
         //GIVEN
-        Personaje esperado = PersonajeTestUtil.personaje5;
+        Personaje esperado = PersonajeTestUtil.PERSONAJE1_SIN_ID;
 
         // WHEN
         Personaje actual = this.personajeRepository.save(esperado);
@@ -66,9 +50,9 @@ class IPersonajeRepositoryTest {
     @Test
     void update() {
         //GIVEN
-        Personaje personaje = this.personajeRepository.save(PersonajeTestUtil.personaje5);
+        Personaje personaje = this.personajeRepository.save(PersonajeTestUtil.PERSONAJE1_SIN_ID);
         Long id = personaje.getId();
-        Personaje esperado = PersonajeTestUtil.personaje6;
+        Personaje esperado = PersonajeTestUtil.PERSONAJE2_SIN_ID;
         esperado.setId(id);
 
         // WHEN
@@ -85,7 +69,7 @@ class IPersonajeRepositoryTest {
     @Test
     void existsById() {
         //GIVEN
-        Personaje esperado = this.personajeRepository.save(PersonajeTestUtil.personaje5);
+        Personaje esperado = this.personajeRepository.save(PersonajeTestUtil.PERSONAJE1_SIN_ID);
         Long id = esperado.getId();
 
         // WHEN
@@ -98,7 +82,7 @@ class IPersonajeRepositoryTest {
     @Test
     void findAllByNombre() {
         //GIVEN
-        String nombre = PersonajeTestUtil.NOMBRE2;
+        String nombre = PersonajeTestUtil.PERSONAJE1_SIN_ID.getNombre();
         List<Personaje> esperado = this.personajeRepository.findAll()
                 .stream()
                 .filter(p -> p.getNombre().equalsIgnoreCase(nombre))
@@ -114,7 +98,7 @@ class IPersonajeRepositoryTest {
     @Test
     void findAllByEdad() {
         //GIVEN
-        Byte edad = PersonajeTestUtil.EDAD;
+        Byte edad = PersonajeTestUtil.PERSONAJE1_SIN_ID.getEdad();
         List<Personaje> esperado = this.personajeRepository.findAll()
                 .stream()
                 .filter(p -> p.getEdad().equals(edad))
@@ -130,8 +114,8 @@ class IPersonajeRepositoryTest {
     @Test
     void findAllByNombreAndEdad() {
         //GIVEN
-        String nombre = PersonajeTestUtil.NOMBRE1;
-        Byte edad = PersonajeTestUtil.EDAD;
+        String nombre = PersonajeTestUtil.PERSONAJE2_SIN_ID.getNombre();
+        Byte edad = PersonajeTestUtil.PERSONAJE2_SIN_ID.getEdad();
         List<Personaje> esperado = this.personajeRepository.findAll()
                 .stream()
                 .filter(p -> p.getEdad().equals(edad) && p.getNombre().equalsIgnoreCase(nombre))
