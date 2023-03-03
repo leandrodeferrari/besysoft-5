@@ -1,6 +1,8 @@
 package com.besysoft.bootcamp.util;
 
 import com.besysoft.bootcamp.domain.Personaje;
+import com.besysoft.bootcamp.dto.request.PersonajeInDto;
+import com.besysoft.bootcamp.dto.response.PersonajeOutDto;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,5 +28,42 @@ public class PersonajeTestUtil {
 
     /*La cantidad de personajes en PERSONAJES_CON_ID debe ser la misma que los inserts de personajes, en import.sql*/
     public static final int PERSONAJES_SIZE = PERSONAJES_CON_ID.size();
+
+    public static List<PersonajeOutDto> generarPersonajesOutDtos(){
+
+        PersonajeOutDto personajeOutDto1 = new PersonajeOutDto();
+        personajeOutDto1.setNombre("Leandro");
+        personajeOutDto1.setEdad((byte) 25);
+        personajeOutDto1.setPeso(67.9D);
+        personajeOutDto1.setHistoria("Actor y compositor.");
+
+        PersonajeOutDto personajeOutDto2 = new PersonajeOutDto();
+        personajeOutDto2.setNombre("Fabian");
+        personajeOutDto2.setEdad((byte) 45);
+        personajeOutDto2.setPeso(89.0D);
+        personajeOutDto2.setHistoria("Modelo y guionista.");
+
+        return Arrays.asList(
+                personajeOutDto1,
+                personajeOutDto2
+        );
+
+    }
+
+    public static final PersonajeOutDto PERSONAJE_OUT_DTO = generarPersonajesOutDtos().get(0);
+
+    public static PersonajeInDto generarPersonajeInDto(){
+
+        PersonajeInDto dto = new PersonajeInDto();
+        dto.setNombre("Fabian");
+        dto.setEdad((byte) 45);
+        dto.setPeso(89.0D);
+        dto.setHistoria("Modelo y guionista.");
+
+        return dto;
+
+    }
+
+    public static final PersonajeInDto PERSONAJE_IN_DTO = generarPersonajeInDto();
 
 }
