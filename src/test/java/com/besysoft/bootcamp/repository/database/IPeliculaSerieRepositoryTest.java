@@ -29,24 +29,6 @@ class IPeliculaSerieRepositoryTest {
     @Autowired
     IPeliculaSerieRepository peliculaSerieRepository;
 
-    @BeforeEach
-    void setUp() {
-        Genero genero1 = generoRepository.save(GeneroTestUtil.genero1);
-        Genero genero2 = generoRepository.save(GeneroTestUtil.genero2);
-        Genero genero3 = generoRepository.save(GeneroTestUtil.genero3);
-        Genero genero4 = generoRepository.save(GeneroTestUtil.genero4);
-
-        this.peliculaSerieRepository.save(new PeliculaSerie("Chucky", LocalDate.parse("2004-10-10"), (byte) 5, genero1,null));
-        this.peliculaSerieRepository.save(new PeliculaSerie("Annabelle", LocalDate.parse("2006-01-10"), (byte) 2, genero1,null));
-        this.peliculaSerieRepository.save(new PeliculaSerie("Jaula", LocalDate.parse("2021-02-12"), (byte) 2, genero2,null));
-        this.peliculaSerieRepository.save(new PeliculaSerie("Culpable", LocalDate.parse("2020-07-11"), (byte) 4, genero4,null));
-    }
-
-    @AfterEach
-    void tearDown() {
-        this.peliculaSerieRepository.deleteAll();
-    }
-
     @Test
     void findAll() {
         //GIVEN
@@ -63,7 +45,7 @@ class IPeliculaSerieRepositoryTest {
     @Test
     void save() {
         //GIVEN
-        Genero genero = this.generoRepository.save(GeneroTestUtil.genero6);
+        Genero genero = this.generoRepository.save(GeneroTestUtil.GENERO2_SIN_ID);
         PeliculaSerie esperado = PeliculaSerieTestUtil.peliculaSerie5;
         esperado.setGenero(genero);
 
@@ -80,7 +62,7 @@ class IPeliculaSerieRepositoryTest {
     @Test
     void update() {
         //GIVEN
-        Genero genero = this.generoRepository.save(GeneroTestUtil.genero6);
+        Genero genero = this.generoRepository.save(GeneroTestUtil.GENERO2_SIN_ID);
         PeliculaSerie peliculaSerie = this.peliculaSerieRepository.save(
                 new PeliculaSerie
                         ("Tiburon", LocalDate.parse("2023-01-01"), (byte) 4, genero, null)
@@ -104,7 +86,7 @@ class IPeliculaSerieRepositoryTest {
     @Test
     void existsById() {
         //GIVEN
-        Genero genero = this.generoRepository.save(GeneroTestUtil.genero6);
+        Genero genero = this.generoRepository.save(GeneroTestUtil.GENERO2_SIN_ID);
         PeliculaSerie peliculaSerie = PeliculaSerieTestUtil.peliculaSerie6;
         peliculaSerie.setGenero(genero);
         PeliculaSerie esperado = this.peliculaSerieRepository.save(peliculaSerie);
@@ -120,7 +102,7 @@ class IPeliculaSerieRepositoryTest {
     @Test
     void findAllByGenero() {
         //GIVEN
-        String nombreGenero = GeneroTestUtil.genero1.getNombre();
+        String nombreGenero = GeneroTestUtil.GENERO1_SIN_ID.getNombre();
         Genero genero = this.generoRepository.findByNombre(nombreGenero).orElseThrow();
         List<PeliculaSerie> esperado = this.peliculaSerieRepository.findAll()
                 .stream()
@@ -162,7 +144,7 @@ class IPeliculaSerieRepositoryTest {
     void findAllByTituloAndGenero() {
         //GIVEN
         String titulo = PeliculaSerieTestUtil.peliculaSerie3.getTitulo();;
-        String nombreGenero = GeneroTestUtil.genero2.getNombre();
+        String nombreGenero = GeneroTestUtil.GENERO2_SIN_ID.getNombre();
         Genero genero = this.generoRepository.findByNombre(nombreGenero).orElseThrow();
         List<PeliculaSerie> esperado = this.peliculaSerieRepository
                 .findAll()
@@ -221,7 +203,7 @@ class IPeliculaSerieRepositoryTest {
     @Test
     void existsByTitulo() {
         //GIVEN
-        Genero genero = this.generoRepository.save(GeneroTestUtil.genero6);
+        Genero genero = this.generoRepository.save(GeneroTestUtil.GENERO2_SIN_ID);
         PeliculaSerie peliculaSerie = PeliculaSerieTestUtil.peliculaSerie6;
         peliculaSerie.setGenero(genero);
         PeliculaSerie esperado = this.peliculaSerieRepository.save(peliculaSerie);

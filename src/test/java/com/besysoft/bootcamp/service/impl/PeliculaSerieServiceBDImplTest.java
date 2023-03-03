@@ -7,6 +7,7 @@ import com.besysoft.bootcamp.dto.request.PeliculaSerieInDto;
 import com.besysoft.bootcamp.dto.response.PeliculaSerieOutDto;
 import com.besysoft.bootcamp.repository.database.IPeliculaSerieRepository;
 import com.besysoft.bootcamp.service.IGeneroService;
+import com.besysoft.bootcamp.util.GeneroTestUtil;
 import com.besysoft.bootcamp.util.PeliculaSerieTestUtil;
 
 import org.junit.jupiter.api.Test;
@@ -77,7 +78,7 @@ class PeliculaSerieServiceBDImplTest {
                 .thenReturn(PeliculaSerieTestUtil.PELICULAS_SERIES);
         when(this.generoService.existePorNombre(anyString())).thenReturn(true);
         when(this.generoService.buscarPorNombre(anyString()))
-                .thenReturn(Optional.of(new Genero(1L, "Terror"))); //
+                .thenReturn(Optional.of(GeneroTestUtil.GENERO1_CON_ID));
 
         //WHEN
         List<PeliculaSerieOutDto> actual = this.peliculaSerieServiceBD.buscarPorFiltros(titulo, nombreGenero);
@@ -125,7 +126,7 @@ class PeliculaSerieServiceBDImplTest {
 
         when(this.generoService.existePorNombre(anyString())).thenReturn(true);
         when(this.generoService.buscarPorNombre(anyString()))
-                .thenReturn(Optional.of(new Genero(1L, "Terror"))); //
+                .thenReturn(Optional.of(GeneroTestUtil.GENERO1_CON_ID));
         when(this.peliculaSerieRepository.findAllByGenero(any(Genero.class)))
                 .thenReturn(PeliculaSerieTestUtil.PELICULAS_SERIES);
 
@@ -201,7 +202,7 @@ class PeliculaSerieServiceBDImplTest {
         when(this.peliculaSerieRepository.existsByTitulo(anyString())).thenReturn(false);
         when(this.peliculaSerieRepository.save(any(PeliculaSerie.class))).thenReturn(peliculaSerie);
         when(this.generoService.buscarPorId(anyLong()))
-                .thenReturn(Optional.of(new Genero(1L, "Terror"))); //
+                .thenReturn(Optional.of(GeneroTestUtil.GENERO1_CON_ID));
 
         //WHEN
         PeliculaSerieOutDto actual = this.peliculaSerieServiceBD.crear(dto);
@@ -231,7 +232,7 @@ class PeliculaSerieServiceBDImplTest {
         when(this.peliculaSerieRepository.existsById(anyLong())).thenReturn(true);
         when(this.peliculaSerieRepository.existsByTitulo(anyString())).thenReturn(false);
         when(this.generoService.buscarPorId(anyLong()))
-                .thenReturn(Optional.of(new Genero(1L, "Terror"))); //
+                .thenReturn(Optional.of(GeneroTestUtil.GENERO1_CON_ID));
 
         //WHEN
         PeliculaSerieOutDto actual = this.peliculaSerieServiceBD.actualizar(id, dto);

@@ -7,20 +7,19 @@ import java.util.List;
 
 public class GeneroTestUtil {
 
-    public static Genero genero1 = new Genero("Terror");
-    public static Genero genero2 = new Genero("Policial");
-    public static Genero genero3 = new Genero("Suspenso");
-    public static Genero genero4 = new Genero("Romance");
-    public static Genero genero5 = new Genero("Comedia");
-    public static Genero genero6 = new Genero("Ciencia ficcion");
+    public static final Genero GENERO1_SIN_ID = new Genero("Comedia");
+    public static final Genero GENERO2_SIN_ID = new Genero("Ciencia ficcion");
 
-    public static List<Genero> GENEROS = Arrays.asList(
+    public static final List<Genero> GENEROS_CON_ID = Arrays.asList(
             new Genero(1L, "Terror"),
             new Genero(2L, "Policial"),
             new Genero(3L, "Suspenso"),
             new Genero(4L, "Romance")
     );
 
-    public static final int GENEROS_SIZE = GENEROS.size();
+    public static final Genero GENERO1_CON_ID = GENEROS_CON_ID.get(0);
+
+    /*La cantidad de generos en GENEROS_CON_ID debe se la misma que los inserts de generos en import.sql*/
+    public static final int GENEROS_SIZE = GENEROS_CON_ID.size();
 
 }

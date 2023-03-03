@@ -35,12 +35,12 @@ class GeneroServiceBDImplTest {
     @Test
     void obtenerTodos() {
         //GIVEN
-        List<GeneroOutDto> esperado = GeneroTestUtil.GENEROS
+        List<GeneroOutDto> esperado = GeneroTestUtil.GENEROS_CON_ID
                 .stream()
                 .map(this.generoMapper::mapToDto)
                 .collect(Collectors.toList());
 
-        when(this.generoRepository.findAll()).thenReturn(GeneroTestUtil.GENEROS);
+        when(this.generoRepository.findAll()).thenReturn(GeneroTestUtil.GENEROS_CON_ID);
 
         //WHEN
         List<GeneroOutDto> actual = this.generoServiceBD.obtenerTodos();
@@ -55,7 +55,7 @@ class GeneroServiceBDImplTest {
     @Test
     void crear() {
         //GIVEN
-        Genero genero = GeneroTestUtil.GENEROS.get(0); //
+        Genero genero = GeneroTestUtil.GENERO1_CON_ID;
         GeneroOutDto esperado = this.generoMapper.mapToDto(genero);
 
         GeneroInDto dto = new GeneroInDto();
@@ -76,9 +76,9 @@ class GeneroServiceBDImplTest {
     @Test
     void actualizar() {
         //GIVEN
-        Genero genero = GeneroTestUtil.GENEROS.get(0); //
+        Genero genero = GeneroTestUtil.GENERO1_CON_ID;
         GeneroOutDto esperado = this.generoMapper.mapToDto(genero);
-        Long id = GeneroTestUtil.GENEROS.get(0).getId(); //
+        Long id = genero.getId();
 
         GeneroInDto dto = new GeneroInDto();
         dto.setNombre(genero.getNombre());
@@ -100,8 +100,8 @@ class GeneroServiceBDImplTest {
     @Test
     void buscarPorNombre() {
         //GIVEN
-        Genero genero = GeneroTestUtil.GENEROS.get(0); //
-        String nombre = GeneroTestUtil.GENEROS.get(0).getNombre(); //
+        Genero genero = GeneroTestUtil.GENERO1_CON_ID;
+        String nombre = genero.getNombre();
 
         when(this.generoRepository.findByNombre(anyString()))
                 .thenReturn(Optional.of(genero));
@@ -118,8 +118,8 @@ class GeneroServiceBDImplTest {
     @Test
     void buscarPorId() {
         //GIVEN
-        Genero genero = GeneroTestUtil.GENEROS.get(0); //
-        Long id = GeneroTestUtil.GENEROS.get(0).getId(); //
+        Genero genero = GeneroTestUtil.GENERO1_CON_ID;
+        Long id = genero.getId();
 
         when(this.generoRepository.findById(anyLong()))
                 .thenReturn(Optional.of(genero));
@@ -136,7 +136,7 @@ class GeneroServiceBDImplTest {
     @Test
     void existePorNombre() {
         //GIVEN
-        String nombre = GeneroTestUtil.GENEROS.get(0).getNombre(); //
+        String nombre = GeneroTestUtil.GENERO1_CON_ID.getNombre();
 
         when(this.generoRepository.existsByNombre(anyString())).thenReturn(true);
 
@@ -151,7 +151,7 @@ class GeneroServiceBDImplTest {
     @Test
     void existePorId() {
         //GIVEN
-        Long id = GeneroTestUtil.GENEROS.get(0).getId(); //
+        Long id = GeneroTestUtil.GENERO1_CON_ID.getId();
 
         when(this.generoRepository.existsById(anyLong())).thenReturn(true);
 
