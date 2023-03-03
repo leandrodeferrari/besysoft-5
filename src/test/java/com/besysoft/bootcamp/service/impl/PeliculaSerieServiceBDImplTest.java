@@ -45,14 +45,14 @@ class PeliculaSerieServiceBDImplTest {
     @Test
     void buscarPorFiltros_findAll() {
         //GIVEN
-        List<PeliculaSerieOutDto> esperado = PeliculaSerieTestUtil.PELICULAS_SERIES
+        List<PeliculaSerieOutDto> esperado = PeliculaSerieTestUtil.PELICULAS_SERIES_CON_ID
                 .stream()
                 .map(this.peliculaSerieMapper::mapToDto)
                 .collect(Collectors.toList());
         String titulo = null;
         String nombreGenero = null;
 
-        when(this.peliculaSerieRepository.findAll()).thenReturn(PeliculaSerieTestUtil.PELICULAS_SERIES);
+        when(this.peliculaSerieRepository.findAll()).thenReturn(PeliculaSerieTestUtil.PELICULAS_SERIES_CON_ID);
 
         //WHEN
         List<PeliculaSerieOutDto> actual = this.peliculaSerieServiceBD.buscarPorFiltros(titulo, nombreGenero);
@@ -67,15 +67,15 @@ class PeliculaSerieServiceBDImplTest {
     @Test
     void buscarPorFiltros_findAllByTituloAndGenero() {
         //GIVEN
-        List<PeliculaSerieOutDto> esperado = PeliculaSerieTestUtil.PELICULAS_SERIES
+        List<PeliculaSerieOutDto> esperado = PeliculaSerieTestUtil.PELICULAS_SERIES_CON_ID
                 .stream()
                 .map(this.peliculaSerieMapper::mapToDto)
                 .collect(Collectors.toList());
-        String titulo = "Tiburon";
-        String nombreGenero = "Suspenso";
+        String titulo = PeliculaSerieTestUtil.PELICULA_SERIE1_CON_ID.getTitulo();
+        String nombreGenero = PeliculaSerieTestUtil.PELICULA_SERIE1_CON_ID.getGenero().getNombre();
 
         when(this.peliculaSerieRepository.findAllByTituloAndGenero(anyString(), any(Genero.class)))
-                .thenReturn(PeliculaSerieTestUtil.PELICULAS_SERIES);
+                .thenReturn(PeliculaSerieTestUtil.PELICULAS_SERIES_CON_ID);
         when(this.generoService.existePorNombre(anyString())).thenReturn(true);
         when(this.generoService.buscarPorNombre(anyString()))
                 .thenReturn(Optional.of(GeneroTestUtil.GENERO1_CON_ID));
@@ -95,10 +95,10 @@ class PeliculaSerieServiceBDImplTest {
     @Test
     void buscarPorFiltros_findByTitulo() {
         //GIVEN
-        PeliculaSerie peliculaSerie = PeliculaSerieTestUtil.PELICULAS_SERIES.get(0); //
+        PeliculaSerie peliculaSerie = PeliculaSerieTestUtil.PELICULA_SERIE1_CON_ID;
         List<PeliculaSerieOutDto> esperado = Collections
                 .singletonList(this.peliculaSerieMapper.mapToDto(peliculaSerie));
-        String titulo = "Tiburon";
+        String titulo = peliculaSerie.getTitulo();
         String nombreGenero = null;
 
         when(this.peliculaSerieRepository.findByTitulo(anyString()))
@@ -117,18 +117,18 @@ class PeliculaSerieServiceBDImplTest {
     @Test
     void buscarPorFiltros_findAllByGenero() {
         //GIVEN
-        List<PeliculaSerieOutDto> esperado = PeliculaSerieTestUtil.PELICULAS_SERIES
+        List<PeliculaSerieOutDto> esperado = PeliculaSerieTestUtil.PELICULAS_SERIES_CON_ID
                 .stream()
                 .map(this.peliculaSerieMapper::mapToDto)
                 .collect(Collectors.toList());
         String titulo = null;
-        String nombreGenero = "Terror"; //
+        String nombreGenero = PeliculaSerieTestUtil.PELICULA_SERIE1_CON_ID.getGenero().getNombre();
 
         when(this.generoService.existePorNombre(anyString())).thenReturn(true);
         when(this.generoService.buscarPorNombre(anyString()))
                 .thenReturn(Optional.of(GeneroTestUtil.GENERO1_CON_ID));
         when(this.peliculaSerieRepository.findAllByGenero(any(Genero.class)))
-                .thenReturn(PeliculaSerieTestUtil.PELICULAS_SERIES);
+                .thenReturn(PeliculaSerieTestUtil.PELICULAS_SERIES_CON_ID);
 
         //WHEN
         List<PeliculaSerieOutDto> actual = this.peliculaSerieServiceBD.buscarPorFiltros(titulo, nombreGenero);
@@ -145,16 +145,16 @@ class PeliculaSerieServiceBDImplTest {
     @Test
     void buscarPorFechas() {
         //GIVEN
-        List<PeliculaSerieOutDto> esperado = PeliculaSerieTestUtil.PELICULAS_SERIES
+        List<PeliculaSerieOutDto> esperado = PeliculaSerieTestUtil.PELICULAS_SERIES_CON_ID
                 .stream()
                 .map(this.peliculaSerieMapper::mapToDto)
                 .collect(Collectors.toList());
-        String desde = "01-01-2020"; //
-        String hasta = "01-01-2022"; //
+        String desde = "01-01-2020";
+        String hasta = "01-01-2022";
 
         when(this.peliculaSerieRepository
                 .findAllByFechaDeCreacionBetween(any(LocalDate.class), any(LocalDate.class)))
-                .thenReturn(PeliculaSerieTestUtil.PELICULAS_SERIES);
+                .thenReturn(PeliculaSerieTestUtil.PELICULAS_SERIES_CON_ID);
 
         //WHEN
         List<PeliculaSerieOutDto> actual = this.peliculaSerieServiceBD.buscarPorFechas(desde, hasta);
@@ -168,15 +168,15 @@ class PeliculaSerieServiceBDImplTest {
     @Test
     void buscarPorCalificaciones() {
         //GIVEN
-        List<PeliculaSerieOutDto> esperado = PeliculaSerieTestUtil.PELICULAS_SERIES
+        List<PeliculaSerieOutDto> esperado = PeliculaSerieTestUtil.PELICULAS_SERIES_CON_ID
                 .stream()
                 .map(this.peliculaSerieMapper::mapToDto)
                 .collect(Collectors.toList());
-        Byte desde = (byte) 2; //
-        Byte hasta = (byte) 5; //
+        Byte desde = PeliculaSerieTestUtil.DESDE_BYTE;
+        Byte hasta = PeliculaSerieTestUtil.HASTA_BYTE;
 
         when(this.peliculaSerieRepository.findAllByCalificacionBetween(anyByte(), anyByte()))
-                .thenReturn(PeliculaSerieTestUtil.PELICULAS_SERIES);
+                .thenReturn(PeliculaSerieTestUtil.PELICULAS_SERIES_CON_ID);
 
         //WHEN
         List<PeliculaSerieOutDto> actual = this.peliculaSerieServiceBD.buscarPorCalificaciones(desde, hasta);
@@ -189,7 +189,7 @@ class PeliculaSerieServiceBDImplTest {
     @Test
     void crear() {
         //GIVEN
-        PeliculaSerie peliculaSerie = PeliculaSerieTestUtil.PELICULAS_SERIES.get(0); //
+        PeliculaSerie peliculaSerie = PeliculaSerieTestUtil.PELICULA_SERIE1_CON_ID;
         PeliculaSerieOutDto esperado = this.peliculaSerieMapper.mapToDto(peliculaSerie);
 
         PeliculaSerieInDto dto = new PeliculaSerieInDto();
@@ -217,9 +217,9 @@ class PeliculaSerieServiceBDImplTest {
     @Test
     void actualizar() {
         //GIVEN
-        PeliculaSerie peliculaSerie = PeliculaSerieTestUtil.PELICULAS_SERIES.get(0); //
+        PeliculaSerie peliculaSerie = PeliculaSerieTestUtil.PELICULA_SERIE1_CON_ID;
         PeliculaSerieOutDto esperado = this.peliculaSerieMapper.mapToDto(peliculaSerie);
-        Long id = 1L; //
+        Long id = peliculaSerie.getId();
 
         PeliculaSerieInDto dto = new PeliculaSerieInDto();
         dto.setTitulo(peliculaSerie.getTitulo());

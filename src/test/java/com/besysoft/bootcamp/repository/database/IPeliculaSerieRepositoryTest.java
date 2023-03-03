@@ -5,8 +5,6 @@ import com.besysoft.bootcamp.domain.PeliculaSerie;
 import com.besysoft.bootcamp.util.GeneroTestUtil;
 import com.besysoft.bootcamp.util.PeliculaSerieTestUtil;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,14 +37,15 @@ class IPeliculaSerieRepositoryTest {
 
         //THEN
         assertFalse(peliculasSeries.isEmpty());
-        assertEquals(4, peliculasSeries.size());
+        assertEquals(PeliculaSerieTestUtil.PELICULAS_SERIES_SIZE, peliculasSeries.size());
     }
 
     @Test
     void save() {
         //GIVEN
         Genero genero = this.generoRepository.save(GeneroTestUtil.GENERO2_SIN_ID);
-        PeliculaSerie esperado = PeliculaSerieTestUtil.peliculaSerie5;
+
+        PeliculaSerie esperado = PeliculaSerieTestUtil.PELICULA_SERIE1_SIN_ID;
         esperado.setGenero(genero);
 
         //WHEN
@@ -63,12 +62,12 @@ class IPeliculaSerieRepositoryTest {
     void update() {
         //GIVEN
         Genero genero = this.generoRepository.save(GeneroTestUtil.GENERO2_SIN_ID);
-        PeliculaSerie peliculaSerie = this.peliculaSerieRepository.save(
-                new PeliculaSerie
-                        ("Tiburon", LocalDate.parse("2023-01-01"), (byte) 4, genero, null)
-        );
+        PeliculaSerie peliculaSerieParaGuardar = PeliculaSerieTestUtil.PELICULA_SERIE1_SIN_ID;
+        peliculaSerieParaGuardar.setGenero(genero);
+        PeliculaSerie peliculaSerie = this.peliculaSerieRepository.save(peliculaSerieParaGuardar);
         Long id = peliculaSerie.getId();
-        PeliculaSerie esperado = PeliculaSerieTestUtil.peliculaSerie6;
+
+        PeliculaSerie esperado = PeliculaSerieTestUtil.PELICULA_SERIE2_SIN_ID;
         esperado.setGenero(genero);
         esperado.setId(id);
 
@@ -87,8 +86,9 @@ class IPeliculaSerieRepositoryTest {
     void existsById() {
         //GIVEN
         Genero genero = this.generoRepository.save(GeneroTestUtil.GENERO2_SIN_ID);
-        PeliculaSerie peliculaSerie = PeliculaSerieTestUtil.peliculaSerie6;
+        PeliculaSerie peliculaSerie = PeliculaSerieTestUtil.PELICULA_SERIE2_SIN_ID;
         peliculaSerie.setGenero(genero);
+
         PeliculaSerie esperado = this.peliculaSerieRepository.save(peliculaSerie);
         Long id = esperado.getId();
 
@@ -102,8 +102,8 @@ class IPeliculaSerieRepositoryTest {
     @Test
     void findAllByGenero() {
         //GIVEN
-        String nombreGenero = GeneroTestUtil.GENERO1_SIN_ID.getNombre();
-        Genero genero = this.generoRepository.findByNombre(nombreGenero).orElseThrow();
+        Genero genero = this.generoRepository.save(GeneroTestUtil.GENERO1_SIN_ID);
+
         List<PeliculaSerie> esperado = this.peliculaSerieRepository.findAll()
                 .stream()
                 .filter(p -> p.getGenero().equals(genero))
@@ -120,7 +120,12 @@ class IPeliculaSerieRepositoryTest {
     @Test
     void findByTitulo() {
         //GIVEN
-        String titulo = PeliculaSerieTestUtil.peliculaSerie3.getTitulo();
+        Genero genero = this.generoRepository.save(GeneroTestUtil.GENERO2_SIN_ID);
+        PeliculaSerie peliculaSerie = PeliculaSerieTestUtil.PELICULA_SERIE1_SIN_ID;
+        peliculaSerie.setGenero(genero);
+        this.peliculaSerieRepository.save(peliculaSerie);
+        String titulo = peliculaSerie.getTitulo();
+
         PeliculaSerie esperado = this.peliculaSerieRepository
                 .findAll()
                 .stream()
@@ -143,9 +148,12 @@ class IPeliculaSerieRepositoryTest {
     @Test
     void findAllByTituloAndGenero() {
         //GIVEN
-        String titulo = PeliculaSerieTestUtil.peliculaSerie3.getTitulo();;
-        String nombreGenero = GeneroTestUtil.GENERO2_SIN_ID.getNombre();
-        Genero genero = this.generoRepository.findByNombre(nombreGenero).orElseThrow();
+        Genero genero = this.generoRepository.save(GeneroTestUtil.GENERO2_SIN_ID);
+        PeliculaSerie peliculaSerie = PeliculaSerieTestUtil.PELICULA_SERIE2_SIN_ID;
+        peliculaSerie.setGenero(genero);
+        this.peliculaSerieRepository.save(peliculaSerie);
+        String titulo = peliculaSerie.getTitulo();
+
         List<PeliculaSerie> esperado = this.peliculaSerieRepository
                 .findAll()
                 .stream().filter(p -> p.getTitulo().equalsIgnoreCase(titulo) && p.getGenero().equals(genero))
@@ -165,6 +173,7 @@ class IPeliculaSerieRepositoryTest {
         //GIVEN
         LocalDate desde = PeliculaSerieTestUtil.DESDE_LOCAL_DATE;
         LocalDate hasta = PeliculaSerieTestUtil.HASTA_LOCAL_DATE;
+
         List<PeliculaSerie> esperado = this.peliculaSerieRepository
                 .findAll()
                 .stream()
@@ -185,6 +194,7 @@ class IPeliculaSerieRepositoryTest {
         //GIVEN
         Byte desde = PeliculaSerieTestUtil.DESDE_BYTE;
         Byte hasta = PeliculaSerieTestUtil.HASTA_BYTE;
+
         List<PeliculaSerie> esperado = this.peliculaSerieRepository
                 .findAll()
                 .stream()
@@ -204,8 +214,9 @@ class IPeliculaSerieRepositoryTest {
     void existsByTitulo() {
         //GIVEN
         Genero genero = this.generoRepository.save(GeneroTestUtil.GENERO2_SIN_ID);
-        PeliculaSerie peliculaSerie = PeliculaSerieTestUtil.peliculaSerie6;
+        PeliculaSerie peliculaSerie = PeliculaSerieTestUtil.PELICULA_SERIE1_CON_ID;
         peliculaSerie.setGenero(genero);
+
         PeliculaSerie esperado = this.peliculaSerieRepository.save(peliculaSerie);
         String titulo = esperado.getTitulo();
 
