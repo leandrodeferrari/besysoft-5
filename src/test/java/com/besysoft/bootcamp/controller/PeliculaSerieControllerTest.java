@@ -16,6 +16,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDate;
+
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -40,39 +44,107 @@ class PeliculaSerieControllerTest {
     }
 
     @Test
-    void buscarPorFiltros() {
+    void buscarPorFiltros_ConParametrosNulos() throws Exception {
         //GIVEN
-
+        List<PeliculaSerieOutDto> esperado = PeliculaSerieTestUtil.generarPeliculasSeriesOutDtos();
+        when(this.peliculaSerieService.buscarPorFiltros(isNull(), isNull())).thenReturn(esperado);
 
         //WHEN
+        this.mvc.perform(get(this.url)
+                .contentType(MediaType.APPLICATION_JSON))
+                //THEN
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+        verify(this.peliculaSerieService).buscarPorFiltros(isNull(), isNull());
+    }
 
+    @Test
+    void buscarPorFiltros_ConTituloNulo() throws Exception {
+        List<PeliculaSerieOutDto> esperado = PeliculaSerieTestUtil.generarPeliculasSeriesOutDtos();
+        String nombreGenero = "Terror";
+        when(this.peliculaSerieService.buscarPorFiltros(isNull(), anyString())).thenReturn(esperado);
 
-        //THEN
+        //WHEN
+        this.mvc.perform(get(this.url)
+                        .param("nombreGenero", nombreGenero)
+                        .contentType(MediaType.APPLICATION_JSON))
+                //THEN
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+        verify(this.peliculaSerieService).buscarPorFiltros(isNull(), anyString());
 
     }
 
     @Test
-    void buscarPorFechas() {
-        //GIVEN
-
+    void buscarPorFiltros_ConNombreGeneroNulo() throws Exception {
+        List<PeliculaSerieOutDto> esperado = PeliculaSerieTestUtil.generarPeliculasSeriesOutDtos();
+        String titulo = "Tiburon";
+        when(this.peliculaSerieService.buscarPorFiltros(anyString(), isNull())).thenReturn(esperado);
 
         //WHEN
-
-
-        //THEN
-
+        this.mvc.perform(get(this.url)
+                        .param("titulo", titulo)
+                        .contentType(MediaType.APPLICATION_JSON))
+                //THEN
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+        verify(this.peliculaSerieService).buscarPorFiltros(anyString(), isNull());
     }
 
     @Test
-    void buscarPorCalificaciones() {
-        //GIVEN
-
+    void buscarPorFiltros_ConAmbosParametros() throws Exception {
+        List<PeliculaSerieOutDto> esperado = PeliculaSerieTestUtil.generarPeliculasSeriesOutDtos();
+        String titulo = "Tiburon";
+        String nombreGenero = "Terror";
+        when(this.peliculaSerieService.buscarPorFiltros(anyString(), anyString())).thenReturn(esperado);
 
         //WHEN
+        this.mvc.perform(get(this.url)
+                        .param("titulo", titulo)
+                        .param("nombreGenero", nombreGenero)
+                        .contentType(MediaType.APPLICATION_JSON))
+                //THEN
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+        verify(this.peliculaSerieService).buscarPorFiltros(anyString(), anyString());
+    }
 
+    @Test
+    void buscarPorFechas() throws Exception {
+        //GIVEN
+        List<PeliculaSerieOutDto> esperado = PeliculaSerieTestUtil.generarPeliculasSeriesOutDtos();
+        LocalDate desde = PeliculaSerieTestUtil.DESDE_LOCAL_DATE;
+        LocalDate hasta = PeliculaSerieTestUtil.HASTA_LOCAL_DATE;
+        when(this.peliculaSerieService.buscarPorFechas(anyString(), anyString())).thenReturn(esperado);
 
-        //THEN
+        //WHEN
+        this.mvc.perform(get(this.url.concat("/fechas"))
+                        .param("desde", desde.toString())
+                        .param("hasta", hasta.toString())
+                        .contentType(MediaType.APPLICATION_JSON))
+                //THEN
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+        verify(this.peliculaSerieService).buscarPorFechas(anyString(), anyString());
+    }
 
+    @Test
+    void buscarPorCalificaciones() throws Exception {
+        //GIVEN
+        List<PeliculaSerieOutDto> esperado = PeliculaSerieTestUtil.generarPeliculasSeriesOutDtos();
+        Byte desde = PeliculaSerieTestUtil.DESDE_BYTE;
+        Byte hasta = PeliculaSerieTestUtil.HASTA_BYTE;
+        when(this.peliculaSerieService.buscarPorCalificaciones(anyByte(), anyByte())).thenReturn(esperado);
+
+        //WHEN
+        this.mvc.perform(get(this.url.concat("/calificaciones"))
+                        .param("desde", desde.toString())
+                        .param("hasta", hasta.toString())
+                        .contentType(MediaType.APPLICATION_JSON))
+                //THEN
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+        verify(this.peliculaSerieService).buscarPorCalificaciones(anyByte(), anyByte());
     }
 
     @Test

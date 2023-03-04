@@ -16,6 +16,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -40,27 +42,94 @@ class PersonajeControllerTest {
     }
 
     @Test
-    void buscarPorFiltros() {
+    void buscarPorFiltros_ConParametrosNulos() throws Exception {
         //GIVEN
-
+        List<PersonajeOutDto> esperado = PersonajeTestUtil.generarPersonajesOutDtos();
+        when(this.personajeService.buscarPorFiltros(isNull(), isNull()))
+                .thenReturn(esperado);
 
         //WHEN
-
-
-        //THEN
-
+        this.mvc.perform(get(this.url)
+                        .contentType(MediaType.APPLICATION_JSON))
+                //THEN
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+        verify(this.personajeService).buscarPorFiltros(isNull(), isNull());
     }
 
     @Test
-    void buscarPorEdades() {
+    void buscarPorFiltros_ConEdadNulo() throws Exception {
         //GIVEN
-
+        List<PersonajeOutDto> esperado = PersonajeTestUtil.generarPersonajesOutDtos();
+        String nombre = "Tiburon";
+        when(this.personajeService.buscarPorFiltros(anyString(), isNull()))
+                .thenReturn(esperado);
 
         //WHEN
+        this.mvc.perform(get(this.url)
+                        .param("nombre", nombre)
+                        .contentType(MediaType.APPLICATION_JSON))
+                //THEN
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+        verify(this.personajeService).buscarPorFiltros(anyString(), isNull());
+    }
 
+    @Test
+    void buscarPorFiltros_ConNombreNulo() throws Exception {
+        //GIVEN
+        List<PersonajeOutDto> esperado = PersonajeTestUtil.generarPersonajesOutDtos();
+        Byte edad = (byte) 45;
+        when(this.personajeService.buscarPorFiltros(isNull(), anyByte()))
+                .thenReturn(esperado);
 
-        //THEN
+        //WHEN
+        this.mvc.perform(get(this.url)
+                        .param("edad", edad.toString())
+                        .contentType(MediaType.APPLICATION_JSON))
+                //THEN
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+        verify(this.personajeService).buscarPorFiltros(isNull(), anyByte());
+    }
 
+    @Test
+    void buscarPorFiltros_ConAmbosParametros() throws Exception {
+        //GIVEN
+        List<PersonajeOutDto> esperado = PersonajeTestUtil.generarPersonajesOutDtos();
+        String nombre = "Tiburon";
+        Byte edad = (byte) 45;
+        when(this.personajeService.buscarPorFiltros(anyString(), anyByte()))
+                .thenReturn(esperado);
+
+        //WHEN
+        this.mvc.perform(get(this.url)
+                        .param("nombre", nombre)
+                        .param("edad", edad.toString())
+                        .contentType(MediaType.APPLICATION_JSON))
+                //THEN
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+        verify(this.personajeService).buscarPorFiltros(anyString(), anyByte());
+    }
+
+    @Test
+    void buscarPorEdades() throws Exception {
+        //GIVEN
+        List<PersonajeOutDto> esperado = PersonajeTestUtil.generarPersonajesOutDtos();
+        Byte desde = PersonajeTestUtil.DESDE;
+        Byte hasta = PersonajeTestUtil.HASTA;
+        when(this.personajeService.buscarPorEdades(anyByte(), anyByte())).thenReturn(esperado);
+
+        //WHEN
+        this.mvc.perform(get(this.url.concat("/edades"))
+                .param("desde", desde.toString())
+                .param("hasta", hasta.toString())
+                .contentType(MediaType.APPLICATION_JSON))
+                //THEN
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+        verify(this.personajeService).buscarPorEdades(anyByte(), anyByte());
     }
 
     @Test
